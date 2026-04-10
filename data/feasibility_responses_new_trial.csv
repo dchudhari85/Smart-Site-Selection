@@ -1,0 +1,251 @@
+site_id,new_trial_phase,new_trial_ta,new_trial_indication,interest_level,est_startup_days,projected_enroll_rate_per_month,central_irb_preferred,pdl1_testing_mode,imaging_qc,econsent_available,data_sharing_mode
+SITE1000,III,Oncology,NSCLC,Low,82,5.55,0,On-site,Central capability,Available,CSV extracts
+SITE1001,III,Oncology,NSCLC,Medium,67,7.39,1,On-site,Central capability,Available,CSV extracts
+SITE1002,III,Oncology,NSCLC,Medium,35,2.72,1,Limited,Central capability,Not available,Limited
+SITE1003,III,Oncology,NSCLC,Low,46,3.05,1,Send-out,Local only,Available,CSV extracts
+SITE1004,III,Oncology,NSCLC,High,64,6.29,0,On-site,Central capability,Not available,CSV extracts
+SITE1005,III,Oncology,NSCLC,High,65,6.51,0,On-site,Central capability,Available,CSV extracts
+SITE1006,III,Oncology,NSCLC,High,67,1.07,1,Send-out,Local only,Not available,CSV extracts
+SITE1007,III,Oncology,NSCLC,Low,69,4.13,1,Send-out,Local only,Available,Limited
+SITE1008,III,Oncology,NSCLC,High,56,4.05,1,On-site,Central capability,Available,FHIR-ready
+SITE1009,III,Oncology,NSCLC,Medium,65,1.91,0,On-site,Central capability,Available,CSV extracts
+SITE1010,III,Oncology,NSCLC,Medium,60,2.79,0,On-site,Central capability,Not available,FHIR-ready
+SITE1011,III,Oncology,NSCLC,Medium,69,2.74,0,Limited,Central capability,Available,Limited
+SITE1012,III,Oncology,NSCLC,High,72,4.94,0,Send-out,Local only,Available,FHIR-ready
+SITE1013,III,Oncology,NSCLC,Low,60,1.95,0,Send-out,Central capability,Available,CSV extracts
+SITE1014,III,Oncology,NSCLC,Medium,101,3.69,0,On-site,Local only,Available,CSV extracts
+SITE1015,III,Oncology,NSCLC,Medium,63,3.99,0,Send-out,Local only,Available,CSV extracts
+SITE1016,III,Oncology,NSCLC,Medium,41,6.98,1,Send-out,Central capability,Available,FHIR-ready
+SITE1017,III,Oncology,NSCLC,High,77,3.84,1,Send-out,Central capability,Available,CSV extracts
+SITE1018,III,Oncology,NSCLC,High,67,1.85,0,Send-out,Local only,Available,FHIR-ready
+SITE1019,III,Oncology,NSCLC,Medium,54,4.12,0,Limited,Central capability,Available,CSV extracts
+SITE1020,III,Oncology,NSCLC,High,100,5.74,1,Send-out,Central capability,Available,FHIR-ready
+SITE1021,III,Oncology,NSCLC,Medium,58,2.0,0,Send-out,Central capability,Available,FHIR-ready
+SITE1022,III,Oncology,NSCLC,High,42,1.46,1,On-site,Central capability,Available,CSV extracts
+SITE1023,III,Oncology,NSCLC,High,79,4.56,1,Send-out,Local only,Not available,Limited
+SITE1024,III,Oncology,NSCLC,Low,72,4.25,1,On-site,Central capability,Not available,CSV extracts
+SITE1025,III,Oncology,NSCLC,Medium,63,3.9,0,On-site,Central capability,Not available,CSV extracts
+SITE1026,III,Oncology,NSCLC,High,62,3.34,0,On-site,Central capability,Available,Limited
+SITE1027,III,Oncology,NSCLC,High,57,5.39,1,On-site,Local only,Not available,CSV extracts
+SITE1028,III,Oncology,NSCLC,Medium,43,4.46,1,On-site,Central capability,Available,CSV extracts
+SITE1029,III,Oncology,NSCLC,High,93,3.39,1,On-site,Central capability,Not available,FHIR-ready
+SITE1030,III,Oncology,NSCLC,Low,60,4.0,1,Limited,Local only,Not available,CSV extracts
+SITE1031,III,Oncology,NSCLC,Medium,63,6.21,0,On-site,Local only,Not available,CSV extracts
+SITE1032,III,Oncology,NSCLC,High,83,4.65,1,Send-out,Central capability,Available,FHIR-ready
+SITE1033,III,Oncology,NSCLC,Medium,68,3.81,1,Limited,Central capability,Available,Limited
+SITE1034,III,Oncology,NSCLC,High,60,2.49,0,On-site,Local only,Available,FHIR-ready
+SITE1035,III,Oncology,NSCLC,High,81,3.22,0,Send-out,Central capability,Not available,FHIR-ready
+SITE1036,III,Oncology,NSCLC,Low,36,4.85,1,On-site,Local only,Available,Limited
+SITE1037,III,Oncology,NSCLC,High,35,5.62,0,On-site,Central capability,Not available,FHIR-ready
+SITE1038,III,Oncology,NSCLC,Low,78,5.88,1,On-site,Local only,Available,FHIR-ready
+SITE1039,III,Oncology,NSCLC,Medium,64,4.71,1,On-site,Central capability,Not available,FHIR-ready
+SITE1040,III,Oncology,NSCLC,High,70,9.0,1,Send-out,Central capability,Available,FHIR-ready
+SITE1041,III,Oncology,NSCLC,High,57,3.03,1,On-site,Local only,Not available,Limited
+SITE1042,III,Oncology,NSCLC,Medium,92,6.48,1,Send-out,Central capability,Available,Limited
+SITE1043,III,Oncology,NSCLC,Low,68,3.06,0,On-site,Local only,Available,CSV extracts
+SITE1044,III,Oncology,NSCLC,Medium,53,5.78,1,On-site,Central capability,Available,CSV extracts
+SITE1045,III,Oncology,NSCLC,Medium,80,3.46,1,Send-out,Central capability,Available,FHIR-ready
+SITE1046,III,Oncology,NSCLC,High,59,4.34,1,Send-out,Local only,Not available,FHIR-ready
+SITE1047,III,Oncology,NSCLC,High,37,4.87,1,On-site,Local only,Not available,CSV extracts
+SITE1048,III,Oncology,NSCLC,High,40,5.58,0,On-site,Central capability,Available,CSV extracts
+SITE1049,III,Oncology,NSCLC,High,94,1.97,0,On-site,Local only,Not available,FHIR-ready
+SITE1050,III,Oncology,NSCLC,High,80,8.8,1,On-site,Local only,Available,Limited
+SITE1051,III,Oncology,NSCLC,Medium,73,4.71,0,Limited,Central capability,Not available,FHIR-ready
+SITE1052,III,Oncology,NSCLC,High,38,4.56,0,On-site,Central capability,Available,CSV extracts
+SITE1053,III,Oncology,NSCLC,High,64,3.35,1,Send-out,Central capability,Not available,CSV extracts
+SITE1054,III,Oncology,NSCLC,Low,101,3.23,1,Send-out,Central capability,Available,Limited
+SITE1055,III,Oncology,NSCLC,High,52,3.89,1,Send-out,Local only,Available,FHIR-ready
+SITE1056,III,Oncology,NSCLC,High,99,3.3,0,Send-out,Central capability,Available,CSV extracts
+SITE1057,III,Oncology,NSCLC,High,53,6.94,1,On-site,Central capability,Not available,CSV extracts
+SITE1058,III,Oncology,NSCLC,Medium,73,5.31,1,Send-out,Local only,Not available,Limited
+SITE1059,III,Oncology,NSCLC,Low,35,1.72,1,Send-out,Central capability,Not available,CSV extracts
+SITE1060,III,Oncology,NSCLC,High,37,3.8,1,Send-out,Local only,Available,FHIR-ready
+SITE1061,III,Oncology,NSCLC,Medium,84,4.71,1,On-site,Central capability,Not available,CSV extracts
+SITE1062,III,Oncology,NSCLC,High,60,3.99,1,On-site,Local only,Available,CSV extracts
+SITE1063,III,Oncology,NSCLC,High,42,3.81,0,Send-out,Central capability,Not available,CSV extracts
+SITE1064,III,Oncology,NSCLC,Medium,57,2.98,0,Send-out,Central capability,Available,FHIR-ready
+SITE1065,III,Oncology,NSCLC,Low,87,3.54,1,On-site,Local only,Not available,CSV extracts
+SITE1066,III,Oncology,NSCLC,High,74,3.82,0,On-site,Local only,Available,CSV extracts
+SITE1067,III,Oncology,NSCLC,Medium,58,4.48,0,Send-out,Central capability,Not available,FHIR-ready
+SITE1068,III,Oncology,NSCLC,Medium,65,4.35,1,Send-out,Central capability,Available,CSV extracts
+SITE1069,III,Oncology,NSCLC,Low,87,5.11,0,On-site,Local only,Available,CSV extracts
+SITE1070,III,Oncology,NSCLC,High,69,2.31,1,Send-out,Central capability,Available,Limited
+SITE1071,III,Oncology,NSCLC,High,94,5.58,1,On-site,Central capability,Available,FHIR-ready
+SITE1072,III,Oncology,NSCLC,Medium,35,2.29,0,On-site,Local only,Available,CSV extracts
+SITE1073,III,Oncology,NSCLC,Medium,66,3.54,1,Send-out,Central capability,Not available,FHIR-ready
+SITE1074,III,Oncology,NSCLC,High,55,3.51,0,Send-out,Central capability,Available,FHIR-ready
+SITE1075,III,Oncology,NSCLC,High,67,3.33,1,On-site,Central capability,Not available,CSV extracts
+SITE1076,III,Oncology,NSCLC,High,40,5.78,1,On-site,Central capability,Available,FHIR-ready
+SITE1077,III,Oncology,NSCLC,High,76,5.72,1,On-site,Central capability,Not available,FHIR-ready
+SITE1078,III,Oncology,NSCLC,Medium,35,1.28,0,Send-out,Central capability,Available,FHIR-ready
+SITE1079,III,Oncology,NSCLC,Medium,37,3.0,1,Send-out,Central capability,Available,CSV extracts
+SITE1080,III,Oncology,NSCLC,Medium,51,4.06,0,On-site,Local only,Not available,Limited
+SITE1081,III,Oncology,NSCLC,High,66,4.17,0,Limited,Central capability,Not available,FHIR-ready
+SITE1082,III,Oncology,NSCLC,Low,63,4.33,1,Send-out,Central capability,Available,FHIR-ready
+SITE1083,III,Oncology,NSCLC,Low,40,4.96,1,On-site,Local only,Available,FHIR-ready
+SITE1084,III,Oncology,NSCLC,High,75,3.4,1,On-site,Central capability,Available,FHIR-ready
+SITE1085,III,Oncology,NSCLC,High,64,4.15,1,On-site,Local only,Available,FHIR-ready
+SITE1086,III,Oncology,NSCLC,High,46,2.4,1,Limited,Central capability,Not available,Limited
+SITE1087,III,Oncology,NSCLC,High,63,3.43,1,Limited,Central capability,Not available,CSV extracts
+SITE1088,III,Oncology,NSCLC,High,60,2.93,1,On-site,Central capability,Available,CSV extracts
+SITE1089,III,Oncology,NSCLC,Medium,94,1.37,1,Send-out,Central capability,Available,CSV extracts
+SITE1090,III,Oncology,NSCLC,High,57,3.55,1,Limited,Local only,Not available,CSV extracts
+SITE1091,III,Oncology,NSCLC,High,74,3.22,1,Send-out,Central capability,Available,Limited
+SITE1092,III,Oncology,NSCLC,Medium,96,5.76,0,On-site,Central capability,Not available,Limited
+SITE1093,III,Oncology,NSCLC,Medium,53,3.06,1,Send-out,Central capability,Not available,Limited
+SITE1094,III,Oncology,NSCLC,High,35,9.0,0,Send-out,Local only,Not available,CSV extracts
+SITE1095,III,Oncology,NSCLC,High,62,1.12,0,On-site,Local only,Not available,CSV extracts
+SITE1096,III,Oncology,NSCLC,High,59,3.5,1,Send-out,Central capability,Not available,FHIR-ready
+SITE1097,III,Oncology,NSCLC,High,73,6.61,1,On-site,Central capability,Available,FHIR-ready
+SITE1098,III,Oncology,NSCLC,High,76,3.8,1,On-site,Central capability,Available,FHIR-ready
+SITE1099,III,Oncology,NSCLC,Low,90,5.91,1,Send-out,Central capability,Not available,CSV extracts
+SITE1100,III,Oncology,NSCLC,Medium,67,2.6,1,On-site,Local only,Available,CSV extracts
+SITE1101,III,Oncology,NSCLC,Medium,49,1.64,0,Send-out,Central capability,Not available,CSV extracts
+SITE1102,III,Oncology,NSCLC,Low,70,1.23,0,On-site,Central capability,Available,FHIR-ready
+SITE1103,III,Oncology,NSCLC,Medium,92,1.72,1,On-site,Central capability,Available,CSV extracts
+SITE1104,III,Oncology,NSCLC,Low,51,1.96,0,Send-out,Central capability,Available,Limited
+SITE1105,III,Oncology,NSCLC,High,71,1.1,1,On-site,Central capability,Available,FHIR-ready
+SITE1106,III,Oncology,NSCLC,Medium,45,4.85,1,Limited,Central capability,Available,CSV extracts
+SITE1107,III,Oncology,NSCLC,High,38,5.46,0,Send-out,Central capability,Not available,FHIR-ready
+SITE1108,III,Oncology,NSCLC,Low,70,4.5,1,Send-out,Central capability,Available,FHIR-ready
+SITE1109,III,Oncology,NSCLC,High,101,5.33,1,Send-out,Local only,Available,CSV extracts
+SITE1110,III,Oncology,NSCLC,Medium,57,3.99,1,On-site,Central capability,Available,CSV extracts
+SITE1111,III,Oncology,NSCLC,High,55,1.03,0,On-site,Local only,Not available,Limited
+SITE1112,III,Oncology,NSCLC,Low,69,2.27,0,On-site,Local only,Available,Limited
+SITE1113,III,Oncology,NSCLC,Medium,67,5.31,1,Send-out,Central capability,Available,FHIR-ready
+SITE1114,III,Oncology,NSCLC,Low,38,5.87,1,On-site,Central capability,Available,Limited
+SITE1115,III,Oncology,NSCLC,High,70,4.65,1,On-site,Local only,Available,CSV extracts
+SITE1116,III,Oncology,NSCLC,High,81,8.53,0,On-site,Central capability,Not available,FHIR-ready
+SITE1117,III,Oncology,NSCLC,Medium,50,5.19,1,On-site,Local only,Available,CSV extracts
+SITE1118,III,Oncology,NSCLC,Low,78,2.94,1,Send-out,Central capability,Available,CSV extracts
+SITE1119,III,Oncology,NSCLC,High,82,8.2,1,Limited,Central capability,Not available,CSV extracts
+SITE1120,III,Oncology,NSCLC,Medium,54,2.01,1,On-site,Central capability,Available,FHIR-ready
+SITE1121,III,Oncology,NSCLC,Medium,55,3.14,0,Send-out,Central capability,Available,FHIR-ready
+SITE1122,III,Oncology,NSCLC,High,65,2.98,0,Send-out,Central capability,Available,FHIR-ready
+SITE1123,III,Oncology,NSCLC,High,54,5.23,1,Limited,Central capability,Available,CSV extracts
+SITE1124,III,Oncology,NSCLC,Medium,57,2.79,1,On-site,Central capability,Available,Limited
+SITE1125,III,Oncology,NSCLC,Medium,95,5.79,1,On-site,Central capability,Not available,CSV extracts
+SITE1126,III,Oncology,NSCLC,Medium,85,1.87,0,On-site,Central capability,Available,FHIR-ready
+SITE1127,III,Oncology,NSCLC,Low,44,2.96,1,Send-out,Central capability,Not available,FHIR-ready
+SITE1128,III,Oncology,NSCLC,Medium,46,3.93,0,Send-out,Central capability,Available,Limited
+SITE1129,III,Oncology,NSCLC,Medium,53,1.89,1,On-site,Central capability,Available,CSV extracts
+SITE1130,III,Oncology,NSCLC,Medium,71,5.81,0,Send-out,Central capability,Available,FHIR-ready
+SITE1131,III,Oncology,NSCLC,Medium,61,5.33,1,Limited,Local only,Not available,CSV extracts
+SITE1132,III,Oncology,NSCLC,High,65,1.35,0,Send-out,Central capability,Not available,CSV extracts
+SITE1133,III,Oncology,NSCLC,High,82,2.5,1,Limited,Local only,Not available,CSV extracts
+SITE1134,III,Oncology,NSCLC,High,109,9.0,1,Limited,Central capability,Not available,Limited
+SITE1135,III,Oncology,NSCLC,High,57,0.66,0,On-site,Central capability,Not available,FHIR-ready
+SITE1136,III,Oncology,NSCLC,Low,39,1.8,0,On-site,Central capability,Available,Limited
+SITE1137,III,Oncology,NSCLC,High,78,4.7,1,On-site,Central capability,Available,CSV extracts
+SITE1138,III,Oncology,NSCLC,High,88,4.16,1,On-site,Central capability,Available,CSV extracts
+SITE1139,III,Oncology,NSCLC,High,134,4.53,0,On-site,Local only,Not available,CSV extracts
+SITE1140,III,Oncology,NSCLC,High,55,2.86,1,On-site,Local only,Not available,FHIR-ready
+SITE1141,III,Oncology,NSCLC,Medium,57,2.58,1,Send-out,Central capability,Not available,CSV extracts
+SITE1142,III,Oncology,NSCLC,High,45,1.1,0,Send-out,Central capability,Not available,CSV extracts
+SITE1143,III,Oncology,NSCLC,High,62,0.47,1,On-site,Central capability,Available,Limited
+SITE1144,III,Oncology,NSCLC,High,71,7.62,1,On-site,Central capability,Available,CSV extracts
+SITE1145,III,Oncology,NSCLC,Medium,66,4.95,0,Limited,Central capability,Not available,FHIR-ready
+SITE1146,III,Oncology,NSCLC,Low,96,2.29,0,Send-out,Central capability,Available,Limited
+SITE1147,III,Oncology,NSCLC,High,54,3.8,1,Send-out,Central capability,Not available,FHIR-ready
+SITE1148,III,Oncology,NSCLC,High,42,6.78,0,Send-out,Central capability,Available,FHIR-ready
+SITE1149,III,Oncology,NSCLC,High,35,1.29,1,On-site,Local only,Not available,CSV extracts
+SITE1150,III,Oncology,NSCLC,Medium,67,4.93,0,On-site,Local only,Not available,Limited
+SITE1151,III,Oncology,NSCLC,Low,57,4.72,1,Send-out,Central capability,Available,CSV extracts
+SITE1152,III,Oncology,NSCLC,Low,68,3.14,0,On-site,Central capability,Available,CSV extracts
+SITE1153,III,Oncology,NSCLC,Low,63,4.1,1,Send-out,Central capability,Not available,Limited
+SITE1154,III,Oncology,NSCLC,High,35,4.87,0,Limited,Central capability,Not available,FHIR-ready
+SITE1155,III,Oncology,NSCLC,High,54,4.97,1,Send-out,Local only,Available,Limited
+SITE1156,III,Oncology,NSCLC,High,63,3.04,1,Send-out,Central capability,Available,CSV extracts
+SITE1157,III,Oncology,NSCLC,High,35,3.0,0,Send-out,Central capability,Available,FHIR-ready
+SITE1158,III,Oncology,NSCLC,High,79,4.56,0,Send-out,Central capability,Not available,CSV extracts
+SITE1159,III,Oncology,NSCLC,High,50,2.46,0,On-site,Central capability,Not available,FHIR-ready
+SITE1160,III,Oncology,NSCLC,High,40,3.57,1,Send-out,Central capability,Available,CSV extracts
+SITE1161,III,Oncology,NSCLC,High,87,5.03,1,On-site,Central capability,Not available,Limited
+SITE1162,III,Oncology,NSCLC,Medium,75,2.98,0,Send-out,Local only,Available,CSV extracts
+SITE1163,III,Oncology,NSCLC,High,56,3.0,1,Send-out,Local only,Available,Limited
+SITE1164,III,Oncology,NSCLC,Medium,35,2.54,1,Send-out,Central capability,Available,CSV extracts
+SITE1165,III,Oncology,NSCLC,High,77,2.34,1,On-site,Central capability,Not available,Limited
+SITE1166,III,Oncology,NSCLC,High,88,2.46,1,Limited,Local only,Not available,FHIR-ready
+SITE1167,III,Oncology,NSCLC,Medium,36,3.92,0,Send-out,Central capability,Available,CSV extracts
+SITE1168,III,Oncology,NSCLC,Medium,115,5.79,1,On-site,Central capability,Not available,Limited
+SITE1169,III,Oncology,NSCLC,High,61,2.85,1,On-site,Local only,Not available,FHIR-ready
+SITE1170,III,Oncology,NSCLC,Medium,35,5.13,1,On-site,Local only,Available,CSV extracts
+SITE1171,III,Oncology,NSCLC,High,48,7.48,0,On-site,Central capability,Not available,Limited
+SITE1172,III,Oncology,NSCLC,Medium,92,3.56,0,On-site,Central capability,Available,FHIR-ready
+SITE1173,III,Oncology,NSCLC,High,65,6.0,1,On-site,Central capability,Available,Limited
+SITE1174,III,Oncology,NSCLC,Low,36,2.19,1,Send-out,Central capability,Available,FHIR-ready
+SITE1175,III,Oncology,NSCLC,Low,90,2.67,0,Send-out,Central capability,Not available,Limited
+SITE1176,III,Oncology,NSCLC,High,77,4.33,1,On-site,Central capability,Available,Limited
+SITE1177,III,Oncology,NSCLC,Medium,78,4.96,1,Send-out,Central capability,Available,CSV extracts
+SITE1178,III,Oncology,NSCLC,Medium,69,5.29,1,On-site,Central capability,Not available,FHIR-ready
+SITE1179,III,Oncology,NSCLC,Low,75,3.83,1,On-site,Local only,Available,FHIR-ready
+SITE1180,III,Oncology,NSCLC,High,77,5.6,1,On-site,Local only,Available,CSV extracts
+SITE1181,III,Oncology,NSCLC,Medium,66,0.83,1,On-site,Central capability,Not available,Limited
+SITE1182,III,Oncology,NSCLC,High,76,6.41,1,On-site,Central capability,Available,FHIR-ready
+SITE1183,III,Oncology,NSCLC,Medium,54,4.61,1,On-site,Central capability,Available,FHIR-ready
+SITE1184,III,Oncology,NSCLC,High,64,3.17,0,On-site,Central capability,Available,CSV extracts
+SITE1185,III,Oncology,NSCLC,Medium,47,2.31,1,On-site,Central capability,Available,FHIR-ready
+SITE1186,III,Oncology,NSCLC,Medium,50,5.86,1,On-site,Central capability,Available,CSV extracts
+SITE1187,III,Oncology,NSCLC,Low,78,2.51,1,On-site,Local only,Available,FHIR-ready
+SITE1188,III,Oncology,NSCLC,Medium,36,3.22,1,Send-out,Local only,Available,CSV extracts
+SITE1189,III,Oncology,NSCLC,Medium,59,2.82,1,On-site,Central capability,Available,FHIR-ready
+SITE1190,III,Oncology,NSCLC,High,52,4.85,1,Limited,Central capability,Not available,CSV extracts
+SITE1191,III,Oncology,NSCLC,High,43,1.61,0,Limited,Central capability,Available,CSV extracts
+SITE1192,III,Oncology,NSCLC,High,55,4.41,0,Limited,Local only,Available,CSV extracts
+SITE1193,III,Oncology,NSCLC,Medium,70,4.96,0,Limited,Local only,Available,CSV extracts
+SITE1194,III,Oncology,NSCLC,Medium,51,6.05,1,Limited,Central capability,Not available,CSV extracts
+SITE1195,III,Oncology,NSCLC,High,36,5.28,1,On-site,Local only,Not available,CSV extracts
+SITE1196,III,Oncology,NSCLC,High,47,4.31,0,On-site,Central capability,Available,CSV extracts
+SITE1197,III,Oncology,NSCLC,Medium,68,4.34,1,Send-out,Local only,Available,CSV extracts
+SITE1198,III,Oncology,NSCLC,High,53,6.18,0,On-site,Central capability,Not available,CSV extracts
+SITE1199,III,Oncology,NSCLC,High,74,1.45,0,On-site,Central capability,Not available,CSV extracts
+SITE1200,III,Oncology,NSCLC,Low,51,3.97,1,On-site,Central capability,Not available,FHIR-ready
+SITE1201,III,Oncology,NSCLC,Low,63,5.04,1,Send-out,Local only,Available,FHIR-ready
+SITE1202,III,Oncology,NSCLC,High,48,4.05,0,Send-out,Central capability,Available,CSV extracts
+SITE1203,III,Oncology,NSCLC,Low,84,6.96,0,Send-out,Local only,Available,CSV extracts
+SITE1204,III,Oncology,NSCLC,Low,48,3.13,1,On-site,Central capability,Available,Limited
+SITE1205,III,Oncology,NSCLC,High,71,4.96,1,Send-out,Central capability,Available,FHIR-ready
+SITE1206,III,Oncology,NSCLC,Medium,81,4.17,1,On-site,Central capability,Not available,Limited
+SITE1207,III,Oncology,NSCLC,High,48,2.98,1,Limited,Local only,Available,FHIR-ready
+SITE1208,III,Oncology,NSCLC,Low,61,6.2,1,Send-out,Central capability,Available,CSV extracts
+SITE1209,III,Oncology,NSCLC,Medium,95,5.12,1,Send-out,Central capability,Not available,FHIR-ready
+SITE1210,III,Oncology,NSCLC,Medium,82,4.33,1,On-site,Central capability,Available,CSV extracts
+SITE1211,III,Oncology,NSCLC,High,103,5.39,1,Send-out,Central capability,Available,CSV extracts
+SITE1212,III,Oncology,NSCLC,Medium,62,4.37,1,On-site,Local only,Available,CSV extracts
+SITE1213,III,Oncology,NSCLC,Medium,100,7.67,0,On-site,Central capability,Not available,Limited
+SITE1214,III,Oncology,NSCLC,Medium,62,2.41,1,Send-out,Local only,Not available,CSV extracts
+SITE1215,III,Oncology,NSCLC,High,53,4.46,0,On-site,Local only,Not available,FHIR-ready
+SITE1216,III,Oncology,NSCLC,Medium,77,2.74,1,On-site,Central capability,Not available,CSV extracts
+SITE1217,III,Oncology,NSCLC,High,35,4.75,1,On-site,Central capability,Not available,FHIR-ready
+SITE1218,III,Oncology,NSCLC,High,41,4.78,1,On-site,Central capability,Not available,CSV extracts
+SITE1219,III,Oncology,NSCLC,Medium,54,4.3,0,Send-out,Central capability,Available,CSV extracts
+SITE1220,III,Oncology,NSCLC,High,56,4.82,1,Limited,Central capability,Available,CSV extracts
+SITE1221,III,Oncology,NSCLC,Medium,53,6.19,0,On-site,Central capability,Available,CSV extracts
+SITE1222,III,Oncology,NSCLC,High,80,4.91,1,On-site,Local only,Available,FHIR-ready
+SITE1223,III,Oncology,NSCLC,High,67,4.37,0,On-site,Central capability,Available,CSV extracts
+SITE1224,III,Oncology,NSCLC,Medium,46,1.65,0,Limited,Central capability,Not available,FHIR-ready
+SITE1225,III,Oncology,NSCLC,Low,69,2.0,1,On-site,Central capability,Not available,CSV extracts
+SITE1226,III,Oncology,NSCLC,Medium,38,2.22,1,On-site,Central capability,Available,FHIR-ready
+SITE1227,III,Oncology,NSCLC,Medium,69,3.01,0,Send-out,Central capability,Not available,Limited
+SITE1228,III,Oncology,NSCLC,Medium,35,5.41,0,On-site,Central capability,Available,CSV extracts
+SITE1229,III,Oncology,NSCLC,High,89,6.06,0,On-site,Local only,Available,FHIR-ready
+SITE1230,III,Oncology,NSCLC,High,48,3.59,1,Send-out,Central capability,Not available,FHIR-ready
+SITE1231,III,Oncology,NSCLC,Medium,84,2.45,0,On-site,Central capability,Available,CSV extracts
+SITE1232,III,Oncology,NSCLC,High,35,2.84,1,Send-out,Central capability,Not available,CSV extracts
+SITE1233,III,Oncology,NSCLC,Low,63,2.23,1,Limited,Central capability,Available,CSV extracts
+SITE1234,III,Oncology,NSCLC,Medium,72,2.07,0,Send-out,Local only,Available,FHIR-ready
+SITE1235,III,Oncology,NSCLC,High,68,5.18,1,Limited,Central capability,Available,CSV extracts
+SITE1236,III,Oncology,NSCLC,High,75,3.21,1,Limited,Local only,Not available,CSV extracts
+SITE1237,III,Oncology,NSCLC,Medium,49,2.73,1,On-site,Central capability,Available,CSV extracts
+SITE1238,III,Oncology,NSCLC,High,67,4.54,0,On-site,Local only,Not available,CSV extracts
+SITE1239,III,Oncology,NSCLC,High,57,3.03,0,On-site,Central capability,Available,CSV extracts
+SITE1240,III,Oncology,NSCLC,Medium,41,1.39,0,On-site,Central capability,Available,CSV extracts
+SITE1241,III,Oncology,NSCLC,High,68,5.52,1,On-site,Local only,Not available,FHIR-ready
+SITE1242,III,Oncology,NSCLC,High,59,2.91,1,Send-out,Central capability,Not available,FHIR-ready
+SITE1243,III,Oncology,NSCLC,Medium,68,3.66,0,Send-out,Central capability,Available,FHIR-ready
+SITE1244,III,Oncology,NSCLC,Medium,44,5.65,1,On-site,Central capability,Available,CSV extracts
+SITE1245,III,Oncology,NSCLC,High,88,2.79,0,On-site,Central capability,Not available,FHIR-ready
+SITE1246,III,Oncology,NSCLC,Low,102,5.07,0,On-site,Central capability,Not available,CSV extracts
+SITE1247,III,Oncology,NSCLC,High,76,7.22,1,On-site,Local only,Not available,FHIR-ready
+SITE1248,III,Oncology,NSCLC,Low,39,3.46,0,Send-out,Local only,Not available,FHIR-ready
+SITE1249,III,Oncology,NSCLC,Low,71,2.79,0,Limited,Central capability,Available,FHIR-ready

@@ -1,0 +1,3 @@
+username,password,full_name,role,is_active
+admin,admin123,Alex Morgan,Admin,True
+cra_user,cra123,Jordan Lee,CRA,True

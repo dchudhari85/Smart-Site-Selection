@@ -1,0 +1,24 @@
+timestamp,action,entity_type,entity_id,details
+2026-04-08 16:23:23,study_setup_generate,protocol,ST-III-ONC-03,TA=Oncology; indication=NSCLC; phase=III
+2026-04-09 14:47:04,cra_comment,site,SITE1134,Approved
+2026-04-09 14:48:33,final_decision,site,SITE1134,status=auto
+2026-04-09 15:01:49,manual_select,site,SITE1134,Selected from Site Filtering Dashboard
+2026-04-09 15:01:49,manual_select,site,SITE1031,Selected from Site Filtering Dashboard
+2026-04-09 15:02:06,survey_distributed,site,SITE1134,Oncology-NSCLC-feasibility
+2026-04-09 15:02:06,survey_distributed,site,SITE1031,Oncology-NSCLC-feasibility
+2026-04-09 15:03:58,study_setup_generate,protocol,ST-III-ONC-03,TA=Oncology; indication=NSCLC; phase=III
+2026-04-09 15:04:40,study_setup_generate,protocol,h,TA=Oncology; indication=NSCLC; phase=III
+2026-04-09 15:04:49,study_setup_generate,protocol,h,TA=Oncology; indication=NSCLC; phase=III
+2026-04-09 15:04:52,study_setup_generate,protocol,h,TA=Oncology; indication=NSCLC; phase=III
+2026-04-09 15:05:00,study_setup_generate,protocol,h,TA=Oncology; indication=NSCLC; phase=III
+2026-04-09 15:24:34,notification_ack,notification,N0002,Feasibility Survey Submitted
+2026-04-09 15:27:51,cra_comment,site,SITE1134,Test comment
+2026-04-09 15:31:06,study_setup_generate,protocol,ST-III-ONC-03,TA=Oncology; indication=NSCLC; phase=III
+2026-04-09 15:35:55,survey_distributed,site,SITE1134,Oncology-NSCLC-feasibility
+2026-04-09 15:35:55,survey_distributed,site,SITE1031,Oncology-NSCLC-feasibility
+2026-04-09 15:50:57,final_decision,site,SITE1134,status=auto
+2026-04-09 15:51:29,final_decision,site,SITE1094,status=auto
+2026-04-09 16:42:02,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-09 17:56:09,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-09 18:00:56,logout,user,admin,User logged out
+2026-04-09 19:36:00,login,user,admin,role=Admin; full_name=Alex Morgan

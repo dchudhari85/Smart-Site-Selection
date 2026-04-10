@@ -1,0 +1,251 @@
+site_id,site_name,country,region,city,latitude,longitude,institution_type,irb_type,ehr_system,language_primary
+SITE1000,Hospital 1,IN,Asia-Pacific,City1,22.3067,-116.518,Academic,Local,Epic,Japanese
+SITE1001,Hospital 2,ES,Europe,City2,3.7621,92.6082,Community,Central,Allscripts,Mandarin
+SITE1002,Hospital 3,US,North America,City3,7.3963,-54.7306,Private,Local,Epic,Hindi
+SITE1003,Hospital 4,US,North America,City4,40.8867,20.591,Community,Central,Cerner,Korean
+SITE1004,Hospital 5,JP,Asia-Pacific,City5,-11.4351,32.0119,Private,Central,Epic,English
+SITE1005,Hospital 6,MX,Latin America,City6,-31.4845,60.7911,Community,Local,Epic,Mandarin
+SITE1006,Hospital 7,MX,Latin America,City7,15.9697,28.752,Academic,Local,Meditech,English
+SITE1007,Hospital 8,IT,Europe,City8,21.022,-16.8042,Community,Central,Epic,English
+SITE1008,Hospital 9,US,North America,City9,52.7032,-56.541,Community,Central,Epic,Spanish
+SITE1009,Hospital 10,IN,Asia-Pacific,City10,37.2222,82.5842,Private,Central,Other,French
+SITE1010,Hospital 11,ZA,Middle East & Africa,City11,32.8657,9.9242,Network,Central,Cerner,Portuguese
+SITE1011,Hospital 12,US,North America,City12,49.2852,-88.4515,Network,Central,Allscripts,Portuguese
+SITE1012,Hospital 13,AU,Asia-Pacific,City13,-5.1283,57.0155,Private,Local,Epic,Hindi
+SITE1013,Hospital 14,CA,North America,City14,-14.7762,-90.6444,Academic,Local,Cerner,Mandarin
+SITE1014,Hospital 15,US,North America,City15,24.3317,-19.6993,Private,Central,Other,Spanish
+SITE1015,Hospital 16,MX,Latin America,City16,10.9401,40.8357,Private,Central,Epic,English
+SITE1016,Hospital 17,ES,Europe,City17,6.5847,76.966,Community,Local,Other,English
+SITE1017,Hospital 18,BR,Latin America,City18,-22.7301,8.7395,Private,Central,Epic,English
+SITE1018,Hospital 19,FR,Europe,City19,19.986,18.588,Community,Local,Epic,English
+SITE1019,Hospital 20,IN,Asia-Pacific,City20,22.7377,55.8217,Academic,Central,Meditech,Japanese
+SITE1020,Hospital 21,IN,Asia-Pacific,City21,-6.3652,88.2677,Academic,Central,Allscripts,English
+SITE1021,Hospital 22,IT,Europe,City22,-18.8588,-65.4801,Academic,Central,Meditech,Hindi
+SITE1022,Hospital 23,GB,Europe,City23,54.8761,-52.8412,Community,Local,Other,English
+SITE1023,Hospital 24,JP,Asia-Pacific,City24,-18.5584,-52.1706,Academic,Central,Other,English
+SITE1024,Hospital 25,GB,Europe,City25,-28.5248,23.0139,Community,Central,Cerner,English
+SITE1025,Hospital 26,US,North America,City26,33.3198,93.9615,Community,Central,Meditech,English
+SITE1026,Hospital 27,US,North America,City27,3.0232,-71.2962,Community,Local,Allscripts,Portuguese
+SITE1027,Hospital 28,US,North America,City28,50.3318,51.6319,Academic,Central,Other,English
+SITE1028,Hospital 29,CN,Asia-Pacific,City29,-8.7162,-84.8012,Community,Local,Epic,English
+SITE1029,Hospital 30,IN,Asia-Pacific,City30,15.3036,-61.9177,Community,Central,Allscripts,English
+SITE1030,Hospital 31,US,North America,City31,-44.0489,52.9084,Community,Central,Epic,Mandarin
+SITE1031,Hospital 32,KR,Asia-Pacific,City32,31.818,-79.3362,Community,Central,Epic,English
+SITE1032,Hospital 33,IT,Europe,City33,51.5887,-93.3459,Community,Local,Cerner,Hindi
+SITE1033,Hospital 34,US,North America,City34,23.5798,29.4682,Private,Central,Meditech,English
+SITE1034,Hospital 35,ES,Europe,City35,38.7314,-28.3326,Academic,Central,Other,Portuguese
+SITE1035,Hospital 36,US,North America,City36,-34.6978,99.4096,Community,Local,Epic,Hindi
+SITE1036,Hospital 37,MX,Latin America,City37,33.8262,-22.1424,Community,Central,Cerner,Spanish
+SITE1037,Hospital 38,US,North America,City38,-1.9401,-62.8672,Academic,Local,Cerner,English
+SITE1038,Hospital 39,DE,Europe,City39,-27.4742,6.4698,Academic,Central,Other,English
+SITE1039,Hospital 40,CA,North America,City40,45.0378,139.3954,Academic,Local,Cerner,English
+SITE1040,Hospital 41,JP,Asia-Pacific,City41,21.3019,-115.2745,Academic,Central,Epic,French
+SITE1041,Hospital 42,US,North America,City42,-23.4264,-101.023,Private,Central,Cerner,Mandarin
+SITE1042,Hospital 43,AE,Middle East & Africa,City43,-18.2754,107.6116,Community,Central,Epic,French
+SITE1043,Hospital 44,MX,Latin America,City44,-29.4712,-36.3592,Community,Central,Cerner,Mandarin
+SITE1044,Hospital 45,CN,Asia-Pacific,City45,20.3087,-52.3115,Community,Central,Epic,Spanish
+SITE1045,Hospital 46,CN,Asia-Pacific,City46,25.9351,25.5603,Community,Central,Allscripts,Hindi
+SITE1046,Hospital 47,CA,North America,City47,-38.7947,16.4633,Community,Local,Other,Hindi
+SITE1047,Hospital 48,US,North America,City48,52.6029,7.6087,Community,Local,Cerner,English
+SITE1048,Hospital 49,JP,Asia-Pacific,City49,-14.8247,-11.2404,Private,Central,Cerner,English
+SITE1049,Hospital 50,KR,Asia-Pacific,City50,20.688,34.5916,Private,Local,None,Mandarin
+SITE1050,Hospital 51,KR,Asia-Pacific,City1,34.5443,0.3986,Community,Central,None,Hindi
+SITE1051,Hospital 52,US,North America,City2,42.5094,40.8354,Community,Central,Cerner,English
+SITE1052,Hospital 53,IN,Asia-Pacific,City3,25.5955,-60.6063,Academic,Local,Meditech,German
+SITE1053,Hospital 54,DE,Europe,City4,21.329,-85.3228,Academic,Local,Cerner,English
+SITE1054,Hospital 55,FR,Europe,City5,2.9083,72.9923,Community,Central,Meditech,Mandarin
+SITE1055,Hospital 56,FR,Europe,City6,-9.1022,20.1132,Private,Central,Epic,Mandarin
+SITE1056,Hospital 57,US,North America,City7,50.4368,38.2285,Network,Central,Epic,Hindi
+SITE1057,Hospital 58,SG,Asia-Pacific,City8,15.9171,39.0469,Community,Central,Cerner,Mandarin
+SITE1058,Hospital 59,US,North America,City9,40.6975,73.971,Academic,Central,Epic,English
+SITE1059,Hospital 60,IT,Europe,City10,43.0427,99.9431,Network,Local,Cerner,English
+SITE1060,Hospital 61,IT,Europe,City11,-27.0794,-101.1472,Community,Central,Epic,English
+SITE1061,Hospital 62,AE,Middle East & Africa,City12,-23.3152,-7.8507,Academic,Local,Epic,Spanish
+SITE1062,Hospital 63,US,North America,City13,-41.4635,2.9378,Academic,Central,Cerner,English
+SITE1063,Hospital 64,US,North America,City14,-29.9511,44.2639,Academic,Central,Other,English
+SITE1064,Hospital 65,CA,North America,City15,-33.4618,38.7847,Community,Central,Other,English
+SITE1065,Hospital 66,US,North America,City16,45.3685,-26.6993,Private,Central,Meditech,Hindi
+SITE1066,Hospital 67,JP,Asia-Pacific,City17,53.0122,-35.101,Community,Local,Epic,French
+SITE1067,Hospital 68,JP,Asia-Pacific,City18,5.9912,-112.011,Academic,Central,None,English
+SITE1068,Hospital 69,AU,Asia-Pacific,City19,-0.3571,-29.1913,Academic,Central,Other,English
+SITE1069,Hospital 70,CA,North America,City20,23.4698,-114.2739,Community,Local,Epic,English
+SITE1070,Hospital 71,IN,Asia-Pacific,City21,-32.594,70.5053,Community,Central,Cerner,Mandarin
+SITE1071,Hospital 72,US,North America,City22,24.8861,-79.1485,Academic,Central,Other,Spanish
+SITE1072,Hospital 73,IN,Asia-Pacific,City23,-1.0604,-58.611,Community,Central,Cerner,Spanish
+SITE1073,Hospital 74,CN,Asia-Pacific,City24,20.5787,27.4989,Academic,Central,Epic,Spanish
+SITE1074,Hospital 75,US,North America,City25,34.695,130.7784,Academic,Central,Other,Hindi
+SITE1075,Hospital 76,MX,Latin America,City26,9.8394,12.8641,Academic,Local,Epic,Mandarin
+SITE1076,Hospital 77,AU,Asia-Pacific,City27,-14.4749,51.9552,Community,Local,Epic,Mandarin
+SITE1077,Hospital 78,CN,Asia-Pacific,City28,-12.0789,-59.4599,Academic,Central,None,English
+SITE1078,Hospital 79,JP,Asia-Pacific,City29,-23.9604,86.9572,Network,Local,Meditech,Hindi
+SITE1079,Hospital 80,IN,Asia-Pacific,City30,33.7458,114.7185,Academic,Local,Epic,English
+SITE1080,Hospital 81,US,North America,City31,-4.5818,42.6947,Private,Local,Epic,English
+SITE1081,Hospital 82,US,North America,City32,25.9866,93.8567,Community,Central,Epic,English
+SITE1082,Hospital 83,CN,Asia-Pacific,City33,-16.2385,-87.5315,Private,Local,None,English
+SITE1083,Hospital 84,US,North America,City34,-16.3875,105.0751,Community,Central,Cerner,French
+SITE1084,Hospital 85,DE,Europe,City35,-11.6684,-53.4966,Private,Central,None,Hindi
+SITE1085,Hospital 86,FR,Europe,City36,5.5426,-48.3915,Private,Central,Cerner,Hindi
+SITE1086,Hospital 87,MX,Latin America,City37,47.182,-19.7495,Network,Central,Epic,English
+SITE1087,Hospital 88,US,North America,City38,27.1705,110.8279,Private,Central,Epic,English
+SITE1088,Hospital 89,IT,Europe,City39,-18.3044,-25.7205,Academic,Central,Cerner,French
+SITE1089,Hospital 90,AE,Middle East & Africa,City40,-41.256,-119.3938,Community,Local,Cerner,English
+SITE1090,Hospital 91,FR,Europe,City41,-0.7725,-109.9333,Private,Local,Other,English
+SITE1091,Hospital 92,IT,Europe,City42,-16.024,-5.3878,Private,Central,None,Hindi
+SITE1092,Hospital 93,SG,Asia-Pacific,City43,32.1871,-30.2336,Community,Local,Epic,French
+SITE1093,Hospital 94,KR,Asia-Pacific,City44,-4.9402,120.2176,Private,Local,Other,Mandarin
+SITE1094,Hospital 95,FR,Europe,City45,-26.3774,55.0913,Private,Local,Meditech,Hindi
+SITE1095,Hospital 96,US,North America,City46,43.8316,-93.4423,Academic,Local,Epic,Japanese
+SITE1096,Hospital 97,AU,Asia-Pacific,City47,35.9341,32.5613,Network,Central,Epic,English
+SITE1097,Hospital 98,CN,Asia-Pacific,City48,-10.7852,14.0516,Academic,Central,Cerner,English
+SITE1098,Hospital 99,CN,Asia-Pacific,City49,-16.2309,58.7838,Network,Central,Cerner,Hindi
+SITE1099,Hospital 100,KR,Asia-Pacific,City50,16.9892,-39.2468,Academic,Central,None,English
+SITE1100,Hospital 101,CN,Asia-Pacific,City1,32.1219,15.1351,Community,Local,Epic,English
+SITE1101,Hospital 102,GB,Europe,City2,25.2112,-107.1591,Network,Central,Other,English
+SITE1102,Hospital 103,FR,Europe,City3,42.9155,42.8697,Community,Central,None,English
+SITE1103,Hospital 104,AU,Asia-Pacific,City4,13.7804,112.789,Academic,Central,Allscripts,English
+SITE1104,Hospital 105,AU,Asia-Pacific,City5,-16.7569,32.3705,Community,Central,Cerner,Japanese
+SITE1105,Hospital 106,IN,Asia-Pacific,City6,15.4398,83.2039,Community,Local,Other,German
+SITE1106,Hospital 107,US,North America,City7,19.4345,-29.6201,Academic,Central,Allscripts,German
+SITE1107,Hospital 108,ES,Europe,City8,-37.6256,-112.0247,Academic,Central,Cerner,Hindi
+SITE1108,Hospital 109,DE,Europe,City9,-35.1965,98.9929,Community,Central,Other,French
+SITE1109,Hospital 110,CA,North America,City10,-3.7503,-104.8805,Private,Central,Other,Japanese
+SITE1110,Hospital 111,FR,Europe,City11,-11.2197,99.42,Private,Central,Cerner,Portuguese
+SITE1111,Hospital 112,FR,Europe,City12,-10.5318,-99.8532,Academic,Local,Cerner,English
+SITE1112,Hospital 113,IN,Asia-Pacific,City13,4.3217,-85.6194,Community,Central,Epic,Spanish
+SITE1113,Hospital 114,JP,Asia-Pacific,City14,-13.3705,119.9996,Community,Central,Allscripts,English
+SITE1114,Hospital 115,AE,Middle East & Africa,City15,-25.265,7.9692,Community,Central,Other,Spanish
+SITE1115,Hospital 116,US,North America,City16,-1.159,2.7879,Academic,Local,Epic,English
+SITE1116,Hospital 117,MX,Latin America,City17,-26.0184,98.3948,Community,Central,Cerner,Spanish
+SITE1117,Hospital 118,US,North America,City18,23.6237,56.9169,Community,Central,Allscripts,Hindi
+SITE1118,Hospital 119,IN,Asia-Pacific,City19,-5.3892,87.0864,Community,Local,Cerner,Hindi
+SITE1119,Hospital 120,AE,Middle East & Africa,City20,-8.4359,87.6464,Community,Central,Cerner,English
+SITE1120,Hospital 121,FR,Europe,City21,14.5278,45.3454,Private,Local,Other,English
+SITE1121,Hospital 122,ES,Europe,City22,-30.9211,3.9081,Private,Central,Epic,English
+SITE1122,Hospital 123,CN,Asia-Pacific,City23,19.9072,13.5979,Community,Central,Cerner,English
+SITE1123,Hospital 124,CN,Asia-Pacific,City24,-33.3035,-19.1821,Community,Central,Epic,English
+SITE1124,Hospital 125,US,North America,City25,36.321,28.4149,Community,Local,Epic,Japanese
+SITE1125,Hospital 126,CA,North America,City26,2.3765,-67.3207,Community,Central,Cerner,English
+SITE1126,Hospital 127,US,North America,City27,-37.5883,128.2519,Academic,Central,Epic,Spanish
+SITE1127,Hospital 128,JP,Asia-Pacific,City28,-1.4381,-50.1357,Private,Central,Epic,French
+SITE1128,Hospital 129,MX,Latin America,City29,4.5813,-47.9144,Academic,Central,Cerner,English
+SITE1129,Hospital 130,FR,Europe,City30,-2.3968,86.018,Community,Central,Epic,Hindi
+SITE1130,Hospital 131,ZA,Middle East & Africa,City31,-34.9235,-29.6312,Private,Local,Allscripts,English
+SITE1131,Hospital 132,US,North America,City32,48.7134,-32.6515,Community,Local,None,English
+SITE1132,Hospital 133,KR,Asia-Pacific,City33,0.2913,-109.5895,Academic,Central,Other,Korean
+SITE1133,Hospital 134,CN,Asia-Pacific,City34,46.478,116.1099,Community,Central,Meditech,English
+SITE1134,Hospital 135,US,North America,City35,53.3324,-43.1983,Academic,Central,Other,Spanish
+SITE1135,Hospital 136,AE,Middle East & Africa,City36,-3.2072,-2.582,Community,Local,Cerner,English
+SITE1136,Hospital 137,BR,Latin America,City37,50.0906,-0.5611,Private,Local,Meditech,Hindi
+SITE1137,Hospital 138,IT,Europe,City38,-5.524,74.337,Community,Central,Allscripts,Mandarin
+SITE1138,Hospital 139,US,North America,City39,-4.7258,-101.6185,Community,Central,None,Hindi
+SITE1139,Hospital 140,GB,Europe,City40,-35.4993,80.9443,Academic,Local,Epic,Spanish
+SITE1140,Hospital 141,US,North America,City41,37.2465,-13.3755,Community,Central,Meditech,English
+SITE1141,Hospital 142,BR,Latin America,City42,-14.8997,72.7834,Academic,Local,Meditech,English
+SITE1142,Hospital 143,IN,Asia-Pacific,City43,14.9699,30.6515,Network,Local,Allscripts,English
+SITE1143,Hospital 144,US,North America,City44,14.6015,121.0217,Community,Local,Cerner,English
+SITE1144,Hospital 145,IN,Asia-Pacific,City45,3.3551,-107.0127,Academic,Local,Epic,English
+SITE1145,Hospital 146,US,North America,City46,-42.2148,36.3984,Community,Local,Cerner,Korean
+SITE1146,Hospital 147,JP,Asia-Pacific,City47,-15.3735,2.8108,Community,Local,Cerner,English
+SITE1147,Hospital 148,JP,Asia-Pacific,City48,45.8089,70.5331,Academic,Central,Epic,Japanese
+SITE1148,Hospital 149,US,North America,City49,8.8943,104.1804,Academic,Local,Allscripts,Spanish
+SITE1149,Hospital 150,CN,Asia-Pacific,City50,-30.3953,80.43,Community,Local,Other,English
+SITE1150,Hospital 151,US,North America,City1,-29.8398,-99.9163,Academic,Central,Cerner,Mandarin
+SITE1151,Hospital 152,US,North America,City2,-4.469,-14.1787,Academic,Central,Epic,English
+SITE1152,Hospital 153,MX,Latin America,City3,-31.8222,11.117,Academic,Local,Allscripts,French
+SITE1153,Hospital 154,CN,Asia-Pacific,City4,35.7055,-42.8402,Community,Central,Meditech,Spanish
+SITE1154,Hospital 155,FR,Europe,City5,-1.1356,-10.0403,Private,Local,Epic,English
+SITE1155,Hospital 156,IN,Asia-Pacific,City6,-24.8043,-82.5957,Private,Local,Epic,Japanese
+SITE1156,Hospital 157,IN,Asia-Pacific,City7,-24.1018,76.458,Community,Local,Allscripts,Mandarin
+SITE1157,Hospital 158,AU,Asia-Pacific,City8,-41.7989,58.9969,Private,Local,Meditech,Mandarin
+SITE1158,Hospital 159,FR,Europe,City9,25.1525,-25.8315,Academic,Local,Cerner,Korean
+SITE1159,Hospital 160,AU,Asia-Pacific,City10,25.2763,133.9746,Private,Central,Cerner,English
+SITE1160,Hospital 161,ZA,Middle East & Africa,City11,32.2548,73.7276,Private,Central,Allscripts,Spanish
+SITE1161,Hospital 162,ZA,Middle East & Africa,City12,49.6038,92.2169,Community,Local,Epic,English
+SITE1162,Hospital 163,FR,Europe,City13,3.8,-35.095,Community,Local,Allscripts,Spanish
+SITE1163,Hospital 164,BR,Latin America,City14,50.1279,-118.2645,Academic,Central,Epic,Mandarin
+SITE1164,Hospital 165,US,North America,City15,-22.8612,-23.4814,Academic,Central,Epic,English
+SITE1165,Hospital 166,AE,Middle East & Africa,City16,44.7725,65.8177,Community,Central,Epic,Spanish
+SITE1166,Hospital 167,SG,Asia-Pacific,City17,-36.9788,-42.1291,Community,Central,Epic,Spanish
+SITE1167,Hospital 168,KR,Asia-Pacific,City18,-44.7733,98.5406,Community,Local,Meditech,English
+SITE1168,Hospital 169,ES,Europe,City19,-36.2794,-26.7997,Community,Central,Epic,English
+SITE1169,Hospital 170,US,North America,City20,8.1268,83.8966,Academic,Central,Epic,English
+SITE1170,Hospital 171,IN,Asia-Pacific,City21,-13.7904,56.3124,Academic,Central,Cerner,Hindi
+SITE1171,Hospital 172,US,North America,City22,31.9519,-54.5311,Academic,Central,Epic,Mandarin
+SITE1172,Hospital 173,US,North America,City23,-3.1196,57.6541,Academic,Central,Epic,Hindi
+SITE1173,Hospital 174,IN,Asia-Pacific,City24,10.3066,66.0283,Community,Central,Cerner,English
+SITE1174,Hospital 175,FR,Europe,City25,-0.143,129.7676,Community,Central,Cerner,English
+SITE1175,Hospital 176,CA,North America,City26,-41.0839,104.5864,Community,Local,Cerner,English
+SITE1176,Hospital 177,US,North America,City27,-18.9305,92.4731,Academic,Central,Epic,German
+SITE1177,Hospital 178,ES,Europe,City28,-39.9043,-59.3357,Community,Local,Allscripts,English
+SITE1178,Hospital 179,AU,Asia-Pacific,City29,-34.7231,33.1468,Academic,Central,Allscripts,Japanese
+SITE1179,Hospital 180,US,North America,City30,38.5106,71.1392,Private,Central,Epic,English
+SITE1180,Hospital 181,GB,Europe,City31,32.9724,120.3551,Community,Local,Cerner,Portuguese
+SITE1181,Hospital 182,IT,Europe,City32,30.5348,64.3711,Academic,Local,Cerner,Japanese
+SITE1182,Hospital 183,US,North America,City33,40.1672,72.923,Academic,Local,Cerner,English
+SITE1183,Hospital 184,US,North America,City34,-17.5422,43.3249,Community,Local,Cerner,English
+SITE1184,Hospital 185,BR,Latin America,City35,-8.0522,-25.9948,Academic,Central,Other,Japanese
+SITE1185,Hospital 186,US,North America,City36,45.8995,89.8702,Academic,Central,Cerner,English
+SITE1186,Hospital 187,BR,Latin America,City37,-44.1279,28.4286,Academic,Central,Meditech,English
+SITE1187,Hospital 188,GB,Europe,City38,-14.2703,-28.6283,Community,Central,Other,Mandarin
+SITE1188,Hospital 189,US,North America,City39,-17.4448,-7.2265,Academic,Central,Other,Mandarin
+SITE1189,Hospital 190,US,North America,City40,15.3852,-65.3608,Community,Local,Other,Hindi
+SITE1190,Hospital 191,CA,North America,City41,36.4847,45.3878,Community,Local,Epic,English
+SITE1191,Hospital 192,BR,Latin America,City42,-20.9965,-28.6554,Community,Central,Other,English
+SITE1192,Hospital 193,US,North America,City43,49.9884,-31.5297,Community,Central,Allscripts,English
+SITE1193,Hospital 194,CN,Asia-Pacific,City44,-11.7976,-65.7298,Private,Central,Meditech,English
+SITE1194,Hospital 195,US,North America,City45,4.5648,77.3876,Community,Central,Epic,English
+SITE1195,Hospital 196,ZA,Middle East & Africa,City46,-37.0577,82.7062,Private,Central,Cerner,English
+SITE1196,Hospital 197,CN,Asia-Pacific,City47,-13.0993,-20.4322,Academic,Central,Meditech,English
+SITE1197,Hospital 198,MX,Latin America,City48,-8.7783,-19.279,Community,Local,Cerner,English
+SITE1198,Hospital 199,SG,Asia-Pacific,City49,23.6369,102.2637,Academic,Local,Other,English
+SITE1199,Hospital 200,ES,Europe,City50,-13.7286,122.2111,Academic,Central,Epic,Japanese
+SITE1200,Hospital 201,FR,Europe,City1,36.8066,66.8329,Academic,Local,Other,English
+SITE1201,Hospital 202,CA,North America,City2,-23.9742,42.7072,Academic,Central,Allscripts,Japanese
+SITE1202,Hospital 203,AE,Middle East & Africa,City3,-4.0233,76.1245,Academic,Local,Cerner,Korean
+SITE1203,Hospital 204,US,North America,City4,-21.1898,90.127,Community,Central,Cerner,English
+SITE1204,Hospital 205,KR,Asia-Pacific,City5,7.2704,46.385,Community,Local,Other,English
+SITE1205,Hospital 206,IT,Europe,City6,48.1024,-6.9355,Community,Local,Epic,English
+SITE1206,Hospital 207,ZA,Middle East & Africa,City7,53.8525,55.4179,Academic,Local,Cerner,German
+SITE1207,Hospital 208,CN,Asia-Pacific,City8,50.6099,-32.2502,Community,Local,Epic,English
+SITE1208,Hospital 209,AE,Middle East & Africa,City9,-6.5555,-76.7895,Academic,Central,Cerner,English
+SITE1209,Hospital 210,CN,Asia-Pacific,City10,5.7813,-56.4995,Academic,Central,Epic,English
+SITE1210,Hospital 211,US,North America,City11,5.8271,-105.2343,Community,Central,Other,Japanese
+SITE1211,Hospital 212,US,North America,City12,12.9061,3.6409,Network,Local,Epic,Mandarin
+SITE1212,Hospital 213,CA,North America,City13,0.3673,104.4807,Academic,Local,Epic,Spanish
+SITE1213,Hospital 214,FR,Europe,City14,-21.5937,12.6116,Private,Local,Epic,English
+SITE1214,Hospital 215,AU,Asia-Pacific,City15,18.4359,60.296,Community,Central,Epic,Spanish
+SITE1215,Hospital 216,US,North America,City16,-31.0669,105.6884,Community,Central,Cerner,Mandarin
+SITE1216,Hospital 217,DE,Europe,City17,15.1894,136.8323,Academic,Local,None,English
+SITE1217,Hospital 218,US,North America,City18,-31.0764,90.1511,Academic,Central,Allscripts,English
+SITE1218,Hospital 219,AU,Asia-Pacific,City19,-35.0341,116.6201,Community,Local,Cerner,English
+SITE1219,Hospital 220,CN,Asia-Pacific,City20,25.0543,127.4345,Academic,Central,Cerner,English
+SITE1220,Hospital 221,US,North America,City21,2.4522,129.9239,Academic,Local,Epic,English
+SITE1221,Hospital 222,BR,Latin America,City22,50.7442,-22.6066,Community,Local,Epic,English
+SITE1222,Hospital 223,KR,Asia-Pacific,City23,-1.804,-6.6545,Community,Local,Meditech,English
+SITE1223,Hospital 224,US,North America,City24,-39.3486,28.0667,Community,Local,Other,Portuguese
+SITE1224,Hospital 225,BR,Latin America,City25,-43.3039,0.3002,Community,Central,Cerner,English
+SITE1225,Hospital 226,ZA,Middle East & Africa,City26,-6.4777,125.5725,Private,Central,Cerner,Mandarin
+SITE1226,Hospital 227,US,North America,City27,-43.6294,97.5199,Community,Local,Epic,English
+SITE1227,Hospital 228,CN,Asia-Pacific,City28,7.943,-116.5508,Community,Central,Epic,English
+SITE1228,Hospital 229,US,North America,City29,10.3923,-5.2953,Academic,Central,Other,Japanese
+SITE1229,Hospital 230,KR,Asia-Pacific,City30,40.4307,16.7713,Community,Local,Epic,Mandarin
+SITE1230,Hospital 231,US,North America,City31,24.5236,49.3177,Community,Central,Other,Spanish
+SITE1231,Hospital 232,IN,Asia-Pacific,City32,20.532,133.0743,Academic,Central,Cerner,English
+SITE1232,Hospital 233,IN,Asia-Pacific,City33,50.969,17.4498,Academic,Central,Epic,Mandarin
+SITE1233,Hospital 234,GB,Europe,City34,-29.3041,-61.2783,Academic,Local,Cerner,English
+SITE1234,Hospital 235,SG,Asia-Pacific,City35,45.7087,79.5379,Academic,Central,Epic,English
+SITE1235,Hospital 236,US,North America,City36,7.7094,-95.3051,Academic,Local,Cerner,English
+SITE1236,Hospital 237,IN,Asia-Pacific,City37,-42.5105,-73.5023,Private,Central,Cerner,English
+SITE1237,Hospital 238,JP,Asia-Pacific,City38,-3.1242,54.0363,Academic,Central,Cerner,English
+SITE1238,Hospital 239,DE,Europe,City39,18.717,93.8829,Private,Local,Epic,English
+SITE1239,Hospital 240,IT,Europe,City40,30.9049,-77.4042,Network,Central,Epic,English
+SITE1240,Hospital 241,JP,Asia-Pacific,City41,-34.8991,-73.1684,Community,Central,Cerner,French
+SITE1241,Hospital 242,SG,Asia-Pacific,City42,53.6327,-119.1807,Private,Central,Meditech,Korean
+SITE1242,Hospital 243,KR,Asia-Pacific,City43,-39.3448,16.2034,Private,Central,Epic,English
+SITE1243,Hospital 244,DE,Europe,City44,11.8401,24.6188,Academic,Central,Allscripts,Spanish
+SITE1244,Hospital 245,IN,Asia-Pacific,City45,39.8608,60.2268,Private,Central,Epic,English
+SITE1245,Hospital 246,IN,Asia-Pacific,City46,31.1403,-14.075,Academic,Central,Meditech,Mandarin
+SITE1246,Hospital 247,CA,North America,City47,21.6516,-117.1022,Academic,Local,Other,Mandarin
+SITE1247,Hospital 248,CN,Asia-Pacific,City48,-41.3069,11.7991,Academic,Central,Epic,Korean
+SITE1248,Hospital 249,US,North America,City49,41.4608,134.8082,Academic,Local,Meditech,Hindi
+SITE1249,Hospital 250,ES,Europe,City50,-42.841,4.2224,Academic,Central,Cerner,Spanish

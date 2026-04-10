@@ -1,0 +1,7 @@
+notification_id,site_id,type,priority,message,created_at,acknowledged
+N0001,SITE1134,Action Required: Qualification Review,Medium,Approved,2026-04-09 14:47:04,False
+N0002,SITE1134,Feasibility Survey Submitted,Medium,Survey distributed using template Oncology-NSCLC-feasibility,2026-04-09 15:02:06,True
+N0003,SITE1031,Feasibility Survey Submitted,Medium,Survey distributed using template Oncology-NSCLC-feasibility,2026-04-09 15:02:06,False
+N0004,SITE1134,Action Required: Qualification Review,Medium,Test comment,2026-04-09 15:27:51,False
+N0005,SITE1134,Feasibility Survey Submitted,Medium,Survey distributed using template Oncology-NSCLC-feasibility,2026-04-09 15:35:56,False
+N0006,SITE1031,Feasibility Survey Submitted,Medium,Survey distributed using template Oncology-NSCLC-feasibility,2026-04-09 15:35:56,False
