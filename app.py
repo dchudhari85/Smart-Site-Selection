@@ -489,12 +489,15 @@ def reset_chat_history() -> None:
     st.session_state["chat_history"] = [{"role": "assistant", "content": DEFAULT_CHAT_GREETING}]
 
 
+# Raw source inputs loaded from packaged CSV/JSON files.
 CONFIG = load_json_config(CONFIG_PATH)
 SITES = load_csv("sites.csv")
 PIS = load_csv("principal_investigators.csv")
 PERF = load_csv("site_performance_history.csv")
 FEAS = load_csv("feasibility_responses_new_trial.csv")
 REC = load_csv("recommended_top_sites.csv")
+
+# Persistence sidecars loaded and normalized on startup.
 ACTIONS = load_or_init_site_actions(SITES["site_id"].astype(str).tolist())
 TRACK = update_days_open(load_or_init_survey_tracking(SITES["site_id"].astype(str).tolist(), FEAS))
 save_csv(normalize_survey_tracking(TRACK), "survey_tracking.csv")
@@ -504,10 +507,204 @@ USERS = load_or_init_users()
 CHAT_USAGE = load_or_init_chat_usage()
 
 TRIAL = CONFIG.get("new_trial", {})
-TRIAL_TA = TRIAL.get("therapeutic_area", "Oncology")
-TRIAL_IND = TRIAL.get("indication", "NSCLC")
-TRIAL_PHASE = str(TRIAL.get("phase", "III"))
 WEIGHTS = CONFIG.get("scoring_weights", {})
+TRIAL_PHASE_OPTIONS = ["I", "I/II", "II", "III", "IV"]
+TRIAL_CONTEXT_WIDGET_KEYS = {
+    "study_title": "setup_study_title",
+    "protocol_id": "setup_protocol_id",
+    "therapeutic_area": "setup_therapeutic_area",
+    "indication": "setup_indication",
+    "phase": "setup_phase",
+    "total_target_enrollment": "setup_total_target_enrollment",
+    "min_age": "setup_min_age",
+    "max_age": "setup_max_age",
+    "gender": "setup_gender",
+    "target_geographies": "setup_target_geographies",
+    "require_biomarker_testing": "setup_require_biomarker_testing",
+    "rare_disease_protocol": "setup_rare_disease_protocol",
+    "competitive_trial_density_tolerance": "setup_competitive_trial_density_tolerance",
+    "irb_preference": "setup_irb_preference",
+}
+
+
+def get_trial_ta_options() -> list[str]:
+    values = set()
+    if "therapeutic_area" in PERF.columns:
+        values.update(PERF["therapeutic_area"].dropna().astype(str).str.strip().tolist())
+    if "new_trial_ta" in FEAS.columns:
+        values.update(FEAS["new_trial_ta"].dropna().astype(str).str.strip().tolist())
+    trial_ta = normalize_text_value(TRIAL.get("therapeutic_area", "Oncology")).strip()
+    if trial_ta:
+        values.add(trial_ta)
+    return sorted(v for v in values if v)
+
+
+def get_trial_indication_options(therapeutic_area: str | None = None) -> list[str]:
+    ta = normalize_text_value(therapeutic_area).strip()
+    values = set()
+    if {"therapeutic_area", "indication"}.issubset(PERF.columns):
+        perf_slice = PERF
+        if ta:
+            perf_slice = perf_slice[perf_slice["therapeutic_area"].astype(str).str.strip() == ta]
+        values.update(perf_slice["indication"].dropna().astype(str).str.strip().tolist())
+    if {"new_trial_ta", "new_trial_indication"}.issubset(FEAS.columns):
+        feas_slice = FEAS
+        if ta:
+            feas_slice = feas_slice[feas_slice["new_trial_ta"].astype(str).str.strip() == ta]
+        values.update(feas_slice["new_trial_indication"].dropna().astype(str).str.strip().tolist())
+    if not values:
+        if "indication" in PERF.columns:
+            values.update(PERF["indication"].dropna().astype(str).str.strip().tolist())
+        if "new_trial_indication" in FEAS.columns:
+            values.update(FEAS["new_trial_indication"].dropna().astype(str).str.strip().tolist())
+    trial_ind = normalize_text_value(TRIAL.get("indication", "NSCLC")).strip()
+    if trial_ind:
+        values.add(trial_ind)
+    return sorted(v for v in values if v)
+
+
+def _build_default_trial_context(trial_seed: dict) -> dict:
+    trial_ta = normalize_text_value(trial_seed.get("therapeutic_area", "Oncology")).strip() or "Oncology"
+    ta_options = get_trial_ta_options()
+    if trial_ta not in ta_options:
+        ta_options = sorted(set(ta_options + [trial_ta]))
+    if ta_options and trial_ta not in ta_options:
+        trial_ta = ta_options[0]
+
+    trial_ind = normalize_text_value(trial_seed.get("indication", "NSCLC")).strip() or "NSCLC"
+    indication_options = get_trial_indication_options(trial_ta)
+    if trial_ind not in indication_options:
+        indication_options = sorted(set(indication_options + [trial_ind]))
+    if indication_options and trial_ind not in indication_options:
+        trial_ind = indication_options[0]
+
+    trial_phase = normalize_text_value(trial_seed.get("phase", "III")).strip() or "III"
+    if trial_phase not in TRIAL_PHASE_OPTIONS:
+        trial_phase = "III"
+
+    geo_options = sorted(SITES["region"].dropna().astype(str).str.strip().unique().tolist())
+    default_geos = geo_options[:3] if geo_options else []
+
+    return {
+        "study_title": f"Phase {trial_phase} Evaluation of {trial_ind} in {trial_ta}",
+        "protocol_id": f"ST-{trial_phase}-{trial_ta[:3].upper()}-03",
+        "therapeutic_area": trial_ta,
+        "indication": trial_ind,
+        "phase": trial_phase,
+        "total_target_enrollment": 450,
+        "min_age": 18,
+        "max_age": 85,
+        "gender": "All",
+        "target_geographies": default_geos,
+        "require_biomarker_testing": True,
+        "rare_disease_protocol": False,
+        "competitive_trial_density_tolerance": "Medium (Standard)",
+        "irb_preference": "Central Preferred",
+        "generated_at": "",
+    }
+
+
+DEFAULT_TRIAL_CONTEXT = _build_default_trial_context(TRIAL)
+
+
+def normalize_trial_context(raw_context: dict | None) -> dict:
+    merged = DEFAULT_TRIAL_CONTEXT.copy()
+    if isinstance(raw_context, dict):
+        merged.update(raw_context)
+
+    ta_options = get_trial_ta_options()
+    therapeutic_area = normalize_text_value(merged.get("therapeutic_area", DEFAULT_TRIAL_CONTEXT["therapeutic_area"])).strip()
+    if not therapeutic_area:
+        therapeutic_area = DEFAULT_TRIAL_CONTEXT["therapeutic_area"]
+    if ta_options and therapeutic_area not in ta_options:
+        therapeutic_area = ta_options[0]
+
+    indication_options = get_trial_indication_options(therapeutic_area)
+    indication = normalize_text_value(merged.get("indication", DEFAULT_TRIAL_CONTEXT["indication"])).strip()
+    if not indication:
+        indication = DEFAULT_TRIAL_CONTEXT["indication"]
+    if indication_options and indication not in indication_options:
+        indication = indication_options[0]
+
+    phase = normalize_text_value(merged.get("phase", DEFAULT_TRIAL_CONTEXT["phase"])).strip()
+    if phase not in TRIAL_PHASE_OPTIONS:
+        phase = DEFAULT_TRIAL_CONTEXT["phase"]
+
+    geo_options = set(SITES["region"].dropna().astype(str).str.strip().tolist())
+    geo_raw = merged.get("target_geographies", DEFAULT_TRIAL_CONTEXT["target_geographies"])
+    if isinstance(geo_raw, list):
+        target_geographies = [normalize_text_value(g).strip() for g in geo_raw if normalize_text_value(g).strip() in geo_options]
+    else:
+        target_geographies = []
+    if not target_geographies:
+        target_geographies = [g for g in DEFAULT_TRIAL_CONTEXT["target_geographies"] if g in geo_options]
+
+    enrollment_raw = pd.to_numeric(merged.get("total_target_enrollment", DEFAULT_TRIAL_CONTEXT["total_target_enrollment"]), errors="coerce")
+    min_age_raw = pd.to_numeric(merged.get("min_age", DEFAULT_TRIAL_CONTEXT["min_age"]), errors="coerce")
+    max_age_raw = pd.to_numeric(merged.get("max_age", DEFAULT_TRIAL_CONTEXT["max_age"]), errors="coerce")
+
+    total_target_enrollment = int(enrollment_raw) if not _is_missing(enrollment_raw) else int(DEFAULT_TRIAL_CONTEXT["total_target_enrollment"])
+    min_age = int(min_age_raw) if not _is_missing(min_age_raw) else int(DEFAULT_TRIAL_CONTEXT["min_age"])
+    max_age = int(max_age_raw) if not _is_missing(max_age_raw) else int(DEFAULT_TRIAL_CONTEXT["max_age"])
+    min_age = max(0, min_age)
+    max_age = max(min_age, max_age)
+
+    gender = normalize_text_value(merged.get("gender", DEFAULT_TRIAL_CONTEXT["gender"])).strip() or DEFAULT_TRIAL_CONTEXT["gender"]
+    if gender not in {"All", "Male", "Female"}:
+        gender = "All"
+
+    tolerance = normalize_text_value(
+        merged.get("competitive_trial_density_tolerance", DEFAULT_TRIAL_CONTEXT["competitive_trial_density_tolerance"])
+    ).strip() or DEFAULT_TRIAL_CONTEXT["competitive_trial_density_tolerance"]
+    if tolerance not in {"Low", "Medium (Standard)", "High"}:
+        tolerance = DEFAULT_TRIAL_CONTEXT["competitive_trial_density_tolerance"]
+
+    irb_preference = normalize_text_value(merged.get("irb_preference", DEFAULT_TRIAL_CONTEXT["irb_preference"])).strip() or DEFAULT_TRIAL_CONTEXT["irb_preference"]
+    if irb_preference not in {"Either", "Central Preferred", "Local Accepted"}:
+        irb_preference = DEFAULT_TRIAL_CONTEXT["irb_preference"]
+
+    context = {
+        "study_title": normalize_text_value(merged.get("study_title", DEFAULT_TRIAL_CONTEXT["study_title"])).strip()
+        or f"Phase {phase} Evaluation of {indication} in {therapeutic_area}",
+        "protocol_id": normalize_text_value(merged.get("protocol_id", DEFAULT_TRIAL_CONTEXT["protocol_id"])).strip()
+        or f"ST-{phase}-{therapeutic_area[:3].upper()}-03",
+        "therapeutic_area": therapeutic_area,
+        "indication": indication,
+        "phase": phase,
+        "total_target_enrollment": max(1, total_target_enrollment),
+        "min_age": min_age,
+        "max_age": max_age,
+        "gender": gender,
+        "target_geographies": target_geographies,
+        "require_biomarker_testing": normalize_bool_value(merged.get("require_biomarker_testing", DEFAULT_TRIAL_CONTEXT["require_biomarker_testing"])),
+        "rare_disease_protocol": normalize_bool_value(merged.get("rare_disease_protocol", DEFAULT_TRIAL_CONTEXT["rare_disease_protocol"])),
+        "competitive_trial_density_tolerance": tolerance,
+        "irb_preference": irb_preference,
+        "generated_at": normalize_text_value(merged.get("generated_at", DEFAULT_TRIAL_CONTEXT["generated_at"])).strip(),
+    }
+    return context
+
+
+def initialize_trial_context_state() -> None:
+    st.session_state["trial_context"] = normalize_trial_context(st.session_state.get("trial_context"))
+    active = st.session_state["trial_context"]
+    for field, widget_key in TRIAL_CONTEXT_WIDGET_KEYS.items():
+        if widget_key not in st.session_state:
+            st.session_state[widget_key] = active.get(field)
+    history = st.session_state.get("trial_context_history")
+    if not isinstance(history, list):
+        st.session_state["trial_context_history"] = []
+
+
+def get_active_trial_context() -> dict:
+    return normalize_trial_context(st.session_state.get("trial_context"))
+
+
+def get_trial_context_from_setup_widgets() -> dict:
+    draft = {}
+    for field, widget_key in TRIAL_CONTEXT_WIDGET_KEYS.items():
+        draft[field] = st.session_state.get(widget_key)
+    return normalize_trial_context(draft)
 
 
 def build_best_pi_lookup(pis: pd.DataFrame, trial_ta: str, trial_indication: str) -> pd.DataFrame:
@@ -570,10 +767,21 @@ def build_best_pi_lookup(pis: pd.DataFrame, trial_ta: str, trial_indication: str
 
 
 @st.cache_data(show_spinner=False)
-def build_master(sites, pis, perf, feas, rec, actions, track):
-    pi_match = build_best_pi_lookup(pis, TRIAL_TA, TRIAL_IND)
+def build_master(sites, pis, perf, feas, rec, actions, track, trial_ta: str, trial_indication: str, trial_phase: str):
+    trial_ta_key = normalize_text_value(trial_ta).strip().lower()
+    trial_ind_key = normalize_text_value(trial_indication).strip().lower()
+    trial_phase_key = normalize_text_value(trial_phase).strip().lower()
 
-    perf_match = perf[(perf["therapeutic_area"] == TRIAL_TA) & (perf["indication"] == TRIAL_IND)].copy()
+    pi_match = build_best_pi_lookup(pis, trial_ta, trial_indication)
+
+    perf_work = perf.copy()
+    for col in ["therapeutic_area", "indication"]:
+        if col not in perf_work.columns:
+            perf_work[col] = ""
+    perf_match = perf_work[
+        perf_work["therapeutic_area"].astype(str).str.strip().str.lower().eq(trial_ta_key)
+        & perf_work["indication"].astype(str).str.strip().str.lower().eq(trial_ind_key)
+    ].copy()
     perf_agg = perf_match.groupby("site_id", as_index=False).agg(
         avg_enroll_rate_per_month=("avg_enroll_rate_per_month", "mean"),
         screen_fail_rate=("screen_fail_rate", "mean"),
@@ -586,11 +794,20 @@ def build_master(sites, pis, perf, feas, rec, actions, track):
         target_enrollment=("target_enrollment", "sum"),
     )
 
+    feas_match = feas.copy()
+    if "new_trial_ta" in feas_match.columns:
+        feas_match = feas_match[feas_match["new_trial_ta"].astype(str).str.strip().str.lower().eq(trial_ta_key)]
+    if "new_trial_indication" in feas_match.columns:
+        feas_match = feas_match[feas_match["new_trial_indication"].astype(str).str.strip().str.lower().eq(trial_ind_key)]
+    if "new_trial_phase" in feas_match.columns:
+        feas_match = feas_match[feas_match["new_trial_phase"].astype(str).str.strip().str.lower().eq(trial_phase_key)]
+    feas_match = feas_match.copy()
+
     df = sites.merge(pi_match[[c for c in pi_match.columns if c in [
         "site_id", "matched_pi_name", "pi_years_experience", "pi_completed_trials", "pi_audit_findings_last_3y"
     ]]], on="site_id", how="left")
     df = df.merge(perf_agg, on="site_id", how="left")
-    df = df.merge(feas, on="site_id", how="left")
+    df = df.merge(feas_match, on="site_id", how="left")
     df = df.merge(rec, on="site_id", how="left", suffixes=("", "_rec"))
     df = df.merge(actions, on="site_id", how="left")
     df = df.merge(track, on="site_id", how="left")
@@ -628,6 +845,8 @@ def build_master(sites, pis, perf, feas, rec, actions, track):
     if "matched_pi_name" not in df.columns:
         df["matched_pi_name"] = "No PI on file"
     df["matched_pi_name"] = df["matched_pi_name"].apply(normalize_text_value).replace("", "No PI on file")
+
+    # Derived master metrics and scoring; formulas remain unchanged and context-aware inputs flow through merges above.
     interest_weight = {"High": 100, "Medium": 70, "Low": 35}
     df["interest_score"] = df["interest_level"].map(interest_weight).fillna(0)
     df["ai_rank_score"] = (df["site_selection_score"].fillna(0) * 300).clip(0, 100).round(0)
@@ -683,7 +902,20 @@ def build_master(sites, pis, perf, feas, rec, actions, track):
     return df
 
 
-MASTER = build_master(SITES, PIS, PERF, FEAS, REC, ACTIONS, TRACK)
+initialize_trial_context_state()
+ACTIVE_TRIAL_CONTEXT = get_active_trial_context()
+MASTER = build_master(
+    SITES,
+    PIS,
+    PERF,
+    FEAS,
+    REC,
+    ACTIONS,
+    TRACK,
+    ACTIVE_TRIAL_CONTEXT["therapeutic_area"],
+    ACTIVE_TRIAL_CONTEXT["indication"],
+    ACTIVE_TRIAL_CONTEXT["phase"],
+)
 
 
 def clear_and_rerun():
@@ -691,34 +923,72 @@ def clear_and_rerun():
     st.rerun()
 
 
+def _load_site_actions_for_batch(site_ids: list[str]) -> pd.DataFrame:
+    requested_ids = [normalize_text_value(sid).strip() for sid in site_ids if normalize_text_value(sid).strip()]
+    known_ids = SITES["site_id"].astype(str).tolist()
+    all_ids = list(dict.fromkeys(known_ids + requested_ids))
+    return normalize_site_actions(load_or_init_site_actions(all_ids))
+
+
+def _apply_site_action_updates(df: pd.DataFrame, updates_by_site: dict[str, dict], update_ts: str) -> tuple[pd.DataFrame, bool]:
+    out = normalize_site_actions(df)
+    changed = False
+    site_to_idx = {normalize_text_value(sid): idx for idx, sid in out["site_id"].items()}
+
+    for site_id, updates in updates_by_site.items():
+        site_key = normalize_text_value(site_id).strip()
+        if not site_key or not isinstance(updates, dict):
+            continue
+
+        row_idx = site_to_idx.get(site_key)
+        if row_idx is None:
+            out = pd.concat([out, pd.DataFrame([default_site_action_row(site_key)])], ignore_index=True)
+            row_idx = out.index[-1]
+            site_to_idx[site_key] = row_idx
+
+        row_changed = False
+        for field, value in updates.items():
+            if field not in SITE_ACTION_COLUMNS or field in {"site_id", "last_updated"}:
+                continue
+            if field in SITE_ACTION_BOOL_COLUMNS:
+                normalized_value = normalize_bool_value(value)
+            else:
+                normalized_value = normalize_text_value(value)
+            if out.at[row_idx, field] != normalized_value:
+                out.at[row_idx, field] = normalized_value
+                row_changed = True
+
+        if row_changed:
+            out.at[row_idx, "site_id"] = site_key
+            out.at[row_idx, "last_updated"] = normalize_text_value(update_ts)
+            changed = True
+
+    return normalize_site_actions(out), changed
+
+
+def persist_site_actions_by_row(updates_by_site: dict[str, dict]):
+    if not isinstance(updates_by_site, dict) or not updates_by_site:
+        return
+    df = _load_site_actions_for_batch(list(updates_by_site.keys()))
+    updated, changed = _apply_site_action_updates(df, updates_by_site, now_ts())
+    if changed:
+        save_csv(updated, "site_actions.csv")
+
+
 def persist_site_action(site_id: str, **updates):
-    df = normalize_site_actions(load_or_init_site_actions(SITES["site_id"].astype(str).tolist()))
     site_key = normalize_text_value(site_id)
     if not site_key:
         return
-
-    idx = df.index[df["site_id"] == site_key]
-    if len(idx) == 0:
-        df = pd.concat([df, pd.DataFrame([default_site_action_row(site_key)])], ignore_index=True)
-        i = df.index[-1]
-    else:
-        i = idx[0]
-
-    for k, v in updates.items():
-        if k not in SITE_ACTION_COLUMNS or k in {"site_id", "last_updated"}:
-            continue
-        if k in SITE_ACTION_BOOL_COLUMNS:
-            df.at[i, k] = normalize_bool_value(v)
-        else:
-            df.at[i, k] = normalize_text_value(v)
-    df.at[i, "site_id"] = site_key
-    df.at[i, "last_updated"] = normalize_text_value(now_ts())
-    save_csv(normalize_site_actions(df), "site_actions.csv")
+    persist_site_actions_by_row({site_key: updates})
 
 
 def persist_bulk_site_action(site_ids: list[str], **updates):
-    for sid in site_ids:
-        persist_site_action(sid, **updates)
+    updates_by_site = {
+        normalize_text_value(sid).strip(): updates
+        for sid in site_ids
+        if normalize_text_value(sid).strip()
+    }
+    persist_site_actions_by_row(updates_by_site)
 
 
 def persist_distribution(site_ids: list[str], template_name: str):
@@ -923,6 +1193,7 @@ def metric_cards(items):
     st.markdown(html, unsafe_allow_html=True)
 
 
+# Global filtered view builder shared by filter-enabled workflow pages.
 def apply_global_filters(df: pd.DataFrame, filters: dict) -> pd.DataFrame:
     out = df.copy()
     region = normalize_text_value(filters.get("region", "All"))
@@ -969,6 +1240,53 @@ def apply_site_filtering_local_filters(df: pd.DataFrame, search_term: str, exp_f
     return out.reset_index(drop=True)
 
 
+def build_feasibility_trend_data(df: pd.DataFrame) -> dict:
+    scoped = df.copy().reset_index(drop=True)
+    if scoped.empty:
+        return {"mode": "demo", "reason": "No response records in scope.", "data": pd.DataFrame()}
+
+    sent_dt = pd.to_datetime(scoped.get("survey_sent_at"), errors="coerce") if "survey_sent_at" in scoped.columns else pd.Series(pd.NaT, index=scoped.index)
+    recv_dt = pd.to_datetime(scoped.get("response_received_at"), errors="coerce") if "response_received_at" in scoped.columns else pd.Series(pd.NaT, index=scoped.index)
+
+    event_rows = []
+    for ts in sent_dt.dropna().tolist():
+        event_rows.append({"event_date": pd.Timestamp(ts).normalize(), "sent_delta": 1, "received_delta": 0})
+    for ts in recv_dt.dropna().tolist():
+        event_rows.append({"event_date": pd.Timestamp(ts).normalize(), "sent_delta": 0, "received_delta": 1})
+
+    if not event_rows:
+        return {
+            "mode": "demo",
+            "reason": "Demo trend estimate (timestamps incomplete)",
+            "data": pd.DataFrame(),
+        }
+
+    events_df = pd.DataFrame(event_rows)
+    daily = (
+        events_df.groupby("event_date", as_index=False)
+        .agg(sent_delta=("sent_delta", "sum"), received_delta=("received_delta", "sum"))
+        .sort_values("event_date")
+        .reset_index(drop=True)
+    )
+    if len(daily) < 2:
+        return {
+            "mode": "demo",
+            "reason": "Demo trend estimate (timestamps incomplete)",
+            "data": pd.DataFrame(),
+        }
+
+    daily["sent"] = daily["sent_delta"].cumsum()
+    daily["received"] = daily["received_delta"].cumsum().clip(lower=0)
+    daily["received"] = daily[["sent", "received"]].min(axis=1)
+    daily["pending"] = (daily["sent"] - daily["received"]).clip(lower=0)
+    daily["date_label"] = daily["event_date"].dt.strftime("%Y-%m-%d")
+    return {
+        "mode": "real",
+        "reason": "",
+        "data": daily[["event_date", "date_label", "sent", "received", "pending"]],
+    }
+
+
 # Scope: globally filtered candidate pool plus Site Filtering local controls.
 def get_site_filtering_page_df(base_view: pd.DataFrame, search_term: str, exp_filter: list[str]) -> pd.DataFrame:
     return apply_site_filtering_local_filters(base_view, search_term, exp_filter)
@@ -997,12 +1315,12 @@ def get_feasibility_analysis_page_df(base_view: pd.DataFrame) -> pd.DataFrame:
     return base_view.copy().reset_index(drop=True)
 
 
-# Scope: globally filtered qualification review cohort.
+# Scope: globally filtered qualification review cohort (matches current sidebar Study Filters).
 def get_qualification_page_df(base_view: pd.DataFrame) -> pd.DataFrame:
     return base_view.copy().reset_index(drop=True)
 
 
-# Scope: globally filtered final-decision cohort.
+# Scope: globally filtered final-decision cohort (matches current sidebar Study Filters).
 def get_final_selection_page_df(base_view: pd.DataFrame) -> pd.DataFrame:
     return base_view.copy().reset_index(drop=True)
 
@@ -1037,6 +1355,63 @@ def render_page_filters(master_df: pd.DataFrame, key_prefix: str) -> dict:
         "interest": interest,
         "min_ai_rank": min_ai_rank,
     }
+
+
+def page_filter_key_prefix(page_name: str) -> str:
+    return normalize_text_value(page_name).lower().replace(" ", "_").replace("/", "_")
+
+
+def get_last_used_filters_for_page(page_name: str, master_df: pd.DataFrame) -> dict:
+    prefix = f"filters_{page_filter_key_prefix(page_name)}"
+    region_options = ["All"] + sorted(master_df["region"].dropna().unique().tolist())
+    country_options = ["All"] + sorted(master_df["country"].dropna().unique().tolist())
+    institution_options = ["All"] + sorted(master_df["institution_type"].dropna().unique().tolist())
+    interest_options = ["All"] + sorted(master_df["interest_level"].dropna().unique().tolist())
+
+    region = normalize_text_value(st.session_state.get(f"{prefix}_region", "All"))
+    country = normalize_text_value(st.session_state.get(f"{prefix}_country", "All"))
+    institution = normalize_text_value(st.session_state.get(f"{prefix}_institution", "All"))
+    interest = normalize_text_value(st.session_state.get(f"{prefix}_interest", "All"))
+    min_ai_rank_raw = pd.to_numeric(st.session_state.get(f"{prefix}_min_ai_rank", 0), errors="coerce")
+    min_ai_rank = int(0 if _is_missing(min_ai_rank_raw) else min_ai_rank_raw)
+
+    return {
+        "region": region if region in region_options else "All",
+        "country": country if country in country_options else "All",
+        "institution": institution if institution in institution_options else "All",
+        "interest": interest if interest in interest_options else "All",
+        "min_ai_rank": max(0, min(100, min_ai_rank)),
+    }
+
+
+def resolve_chatbot_context_df(scope_page: str, master_df: pd.DataFrame) -> pd.DataFrame:
+    page_name = normalize_text_value(scope_page).strip()
+    if page_name == "All Sites (Unfiltered)":
+        return master_df.copy().reset_index(drop=True)
+
+    if page_name in filter_enabled_pages:
+        scope_filters = get_last_used_filters_for_page(page_name, master_df)
+        scoped_base = apply_global_filters(master_df, scope_filters)
+    else:
+        scoped_base = master_df.copy().reset_index(drop=True)
+
+    if page_name == "Site Filtering":
+        search_term = normalize_text_value(st.session_state.get("site_filter_search", ""))
+        exp_filter = st.session_state.get("site_filter_pi_experience", ["High (10+ years)"])
+        if not isinstance(exp_filter, list):
+            exp_filter = ["High (10+ years)"]
+        return get_site_filtering_page_df(scoped_base, search_term, exp_filter)
+    if page_name == "Feasibility Distribution":
+        return get_feasibility_distribution_page_df(master_df, scoped_base)
+    if page_name == "Feasibility Responses":
+        return get_feasibility_responses_page_df(scoped_base)
+    if page_name == "Feasibility Analysis":
+        return get_feasibility_analysis_page_df(scoped_base)
+    if page_name == "Qualification":
+        return get_qualification_page_df(scoped_base)
+    if page_name == "Final Selection":
+        return get_final_selection_page_df(scoped_base)
+    return scoped_base
 
 
 def set_flash_message(message: str, level: str = "success") -> None:
@@ -1123,6 +1498,7 @@ def render_login_screen() -> None:
 
 
 def build_chat_context(page_name: str, context_df: pd.DataFrame) -> str:
+    trial_context = get_active_trial_context()
     active_view = context_df.copy().reset_index(drop=True)
     top_rows = active_view.head(5)
     top_sites = []
@@ -1147,7 +1523,13 @@ def build_chat_context(page_name: str, context_df: pd.DataFrame) -> str:
     return "\n".join(
         [
             f"Current workflow page: {page_name}",
-            f"Trial context: TA={TRIAL_TA}; Indication={TRIAL_IND}; Phase={TRIAL_PHASE}",
+            (
+                "Trial context: "
+                f"TA={trial_context['therapeutic_area']}; "
+                f"Indication={trial_context['indication']}; "
+                f"Phase={trial_context['phase']}; "
+                f"Enrollment target={trial_context['total_target_enrollment']}"
+            ),
             "Top ranked sites:",
             *top_sites,
             f"Feasibility: sent={sent}, received={received}, pending={pending}, reminders={reminders}",
@@ -1266,6 +1648,8 @@ workflow_pages = list(workflow_labels.keys())
 if "page" not in st.session_state or st.session_state["page"] not in workflow_labels:
     st.session_state["page"] = workflow_pages[0]
 
+active_trial_context = get_active_trial_context()
+
 filters = {"region": "All", "country": "All", "institution": "All", "interest": "All", "min_ai_rank": 0}
 with st.sidebar:
     st.markdown("## SmartSite Select")
@@ -1283,73 +1667,108 @@ with st.sidebar:
     st.session_state["page"] = page
     st.markdown("---")
     if page in filter_enabled_pages:
-        page_key = normalize_text_value(page).lower().replace(" ", "_").replace("/", "_")
+        page_key = page_filter_key_prefix(page)
         filters = render_page_filters(MASTER, key_prefix=f"filters_{page_key}")
     else:
         st.caption("Study filters are hidden on this page.")
     st.markdown("---")
-    st.markdown(f"**Therapeutic Area:** {TRIAL_TA}")
-    st.markdown(f"**Indication:** {TRIAL_IND}")
-    st.markdown(f"**Phase:** {TRIAL_PHASE}")
+    st.markdown(f"**Therapeutic Area:** {active_trial_context['therapeutic_area']}")
+    st.markdown(f"**Indication:** {active_trial_context['indication']}")
+    st.markdown(f"**Phase:** {active_trial_context['phase']}")
     st.markdown(f"**Dataset Version:** {CONFIG.get('version','v1')}")
     st.markdown("---")
     st.markdown("<div class='footer-note'>AI Status<br>Models are up to date. Last sync uses the local data folder and persisted app actions.</div>", unsafe_allow_html=True)
 
+# Global filtered view for the active page; page-specific helpers derive workflow cohorts from this base.
 if page in filter_enabled_pages:
     base_view = apply_global_filters(MASTER, filters)
 else:
     base_view = MASTER.copy().reset_index(drop=True)
+
+if page != "Chatbot Assistance":
+    st.session_state["last_context_page"] = page
 
 render_topbar(workflow_labels[page])
 render_flash_message()
 
 if page == "Study Setup":
     st.markdown("<div class='page-title'>Protocol Definition</div><div class='page-sub'>Configure clinical trial parameters that guide AI-driven site ranking and feasibility projections.</div>", unsafe_allow_html=True)
+    ta_options = get_trial_ta_options()
+    if not ta_options:
+        ta_options = [active_trial_context["therapeutic_area"]]
+    ta_key = TRIAL_CONTEXT_WIDGET_KEYS["therapeutic_area"]
+    if normalize_text_value(st.session_state.get(ta_key, "")) not in ta_options:
+        st.session_state[ta_key] = active_trial_context["therapeutic_area"] if active_trial_context["therapeutic_area"] in ta_options else ta_options[0]
+
+    indication_options = get_trial_indication_options(st.session_state[ta_key])
+    if not indication_options:
+        indication_options = [active_trial_context["indication"]]
+    indication_key = TRIAL_CONTEXT_WIDGET_KEYS["indication"]
+    if normalize_text_value(st.session_state.get(indication_key, "")) not in indication_options:
+        st.session_state[indication_key] = active_trial_context["indication"] if active_trial_context["indication"] in indication_options else indication_options[0]
+
+    geo_options = sorted(SITES["region"].dropna().astype(str).str.strip().unique().tolist())
+    geos_key = TRIAL_CONTEXT_WIDGET_KEYS["target_geographies"]
+    geos_state = st.session_state.get(geos_key)
+    if isinstance(geos_state, list):
+        st.session_state[geos_key] = [g for g in geos_state if g in geo_options]
+    else:
+        st.session_state[geos_key] = [g for g in active_trial_context["target_geographies"] if g in geo_options]
+
     left, right = st.columns([1.65, 0.8])
     with left:
         with st.container(border=True):
             st.markdown("<div class='section-head'>General Information</div>", unsafe_allow_html=True)
             c1, c2 = st.columns(2)
-            study_title = c1.text_input("Study Title", value=f"Phase {TRIAL_PHASE} Evaluation of {TRIAL_IND} in {TRIAL_TA}")
-            protocol_id = c2.text_input("Protocol ID", value=f"ST-{TRIAL_PHASE}-{TRIAL_TA[:3].upper()}-03")
+            study_title = c1.text_input("Study Title", key=TRIAL_CONTEXT_WIDGET_KEYS["study_title"])
+            protocol_id = c2.text_input("Protocol ID", key=TRIAL_CONTEXT_WIDGET_KEYS["protocol_id"])
             st.divider()
             st.markdown("<div class='section-head'>Clinical Parameters</div>", unsafe_allow_html=True)
             c3, c4 = st.columns(2)
             ta = c3.selectbox(
                 "Therapeutic Area",
-                sorted(FEAS["new_trial_ta"].dropna().unique().tolist()),
-                index=sorted(FEAS["new_trial_ta"].dropna().unique().tolist()).index(TRIAL_TA)
-                if TRIAL_TA in sorted(FEAS["new_trial_ta"].dropna().unique().tolist())
-                else 0,
+                ta_options,
+                key=ta_key,
             )
             indication = c4.selectbox(
                 "Indication",
-                sorted(FEAS["new_trial_indication"].dropna().unique().tolist()),
-                index=sorted(FEAS["new_trial_indication"].dropna().unique().tolist()).index(TRIAL_IND)
-                if TRIAL_IND in sorted(FEAS["new_trial_indication"].dropna().unique().tolist())
-                else 0,
+                indication_options,
+                key=indication_key,
             )
-            phase = st.radio("Study Phase", ["I", "I/II", "II", "III", "IV"], index=3, horizontal=True)
+            phase = st.radio("Study Phase", TRIAL_PHASE_OPTIONS, horizontal=True, key=TRIAL_CONTEXT_WIDGET_KEYS["phase"])
             st.divider()
             st.markdown("<div class='section-head'>Population & Geography</div>", unsafe_allow_html=True)
             c5, c6, c7, c8 = st.columns([1.25, 1.0, 1.0, 0.95])
-            c5.number_input("Total Target Enrollment", value=450, step=10)
-            c6.number_input("Min Age (in years)", value=18, step=1)
-            c7.number_input("Max Age (in years)", value=85, step=1)
-            c8.selectbox("Gender", ["All", "Male", "Female"], index=0)
+            c5.number_input("Total Target Enrollment", min_value=1, step=10, key=TRIAL_CONTEXT_WIDGET_KEYS["total_target_enrollment"])
+            c6.number_input("Min Age (in years)", min_value=0, step=1, key=TRIAL_CONTEXT_WIDGET_KEYS["min_age"])
+            c7.number_input("Max Age (in years)", min_value=0, step=1, key=TRIAL_CONTEXT_WIDGET_KEYS["max_age"])
+            c8.selectbox("Gender", ["All", "Male", "Female"], key=TRIAL_CONTEXT_WIDGET_KEYS["gender"])
             geos = st.multiselect(
                 "Target Geographies",
-                sorted(MASTER["region"].dropna().unique().tolist()),
-                default=sorted(MASTER["region"].dropna().unique().tolist())[:3],
+                geo_options,
+                key=geos_key,
             )
             with st.expander("Advanced Feasibility Parameters", expanded=True):
                 a1, a2 = st.columns(2)
-                biomarker_required = a1.checkbox("Require Biomarker Testing", value=True)
+                biomarker_required = a1.checkbox("Require Biomarker Testing", key=TRIAL_CONTEXT_WIDGET_KEYS["require_biomarker_testing"])
                 a1.caption("Prioritize sites with in-house genomic sequencing capabilities.")
-                rare_disease_protocol = a1.checkbox("Rare Disease Protocol", value=False)
+                rare_disease_protocol = a1.checkbox("Rare Disease Protocol", key=TRIAL_CONTEXT_WIDGET_KEYS["rare_disease_protocol"])
                 a1.caption("Adjusts AI modeling for hyper-specific patient populations.")
-                a2.selectbox("Competitive Trial Density Tolerance", ["Low", "Medium (Standard)", "High"], index=1)
-                a2.selectbox("IRB Preference", ["Either", "Central Preferred", "Local Accepted"], index=1)
+                a2.selectbox(
+                    "Competitive Trial Density Tolerance",
+                    ["Low", "Medium (Standard)", "High"],
+                    key=TRIAL_CONTEXT_WIDGET_KEYS["competitive_trial_density_tolerance"],
+                )
+                a2.selectbox(
+                    "IRB Preference",
+                    ["Either", "Central Preferred", "Local Accepted"],
+                    key=TRIAL_CONTEXT_WIDGET_KEYS["irb_preference"],
+                )
+            st.info(
+                "Current recomputation is modeled for Therapeutic Area, Indication, and Phase. "
+                "Population, geography, and advanced parameters are captured in state snapshots and context summaries "
+                "for audit/demo transparency."
+            )
     with right:
         with st.container(border=True):
             st.markdown("<div class='section-head'>AI Feasibility Projection</div>", unsafe_allow_html=True)
@@ -1358,9 +1777,14 @@ if page == "Study Setup":
                 f"<div class='metric-card'><div class='metric-label'>Estimated Model Confidence</div><div class='metric-value' style='font-size:48px'>{conf}%</div><div>Based on similar historical trials</div></div>",
                 unsafe_allow_html=True,
             )
+            target_enrollment_raw = pd.to_numeric(
+                st.session_state.get(TRIAL_CONTEXT_WIDGET_KEYS["total_target_enrollment"], 450),
+                errors="coerce",
+            )
+            target_enrollment = int(450 if _is_missing(target_enrollment_raw) else target_enrollment_raw)
             m1, m2 = st.columns(2)
             m1.markdown(
-                f"<div class='metric-card' style='margin-top:12px'><div class='metric-label'>Est. Sites Needed</div><div class='metric-value'>{max(12, int((450/ max(MASTER['projected_enroll_rate_per_month'].fillna(3).median(),1))*0.35))} - {max(18, int((450/ max(MASTER['projected_enroll_rate_per_month'].fillna(3).median(),1))*0.45))}</div></div>",
+                f"<div class='metric-card' style='margin-top:12px'><div class='metric-label'>Est. Sites Needed</div><div class='metric-value'>{max(12, int((target_enrollment/ max(MASTER['projected_enroll_rate_per_month'].fillna(3).median(),1))*0.35))} - {max(18, int((target_enrollment/ max(MASTER['projected_enroll_rate_per_month'].fillna(3).median(),1))*0.45))}</div></div>",
                 unsafe_allow_html=True,
             )
             m2.markdown(
@@ -1368,8 +1792,30 @@ if page == "Study Setup":
                 unsafe_allow_html=True,
             )
             if st.button("Generate AI Recommendations ⚡", use_container_width=True):
-                append_audit("study_setup_generate", "protocol", protocol_id, f"TA={ta}; indication={indication}; phase={phase}")
-                st.success("Generate AI Recommendations completed. Study setup parameters were captured.")
+                captured_context = get_trial_context_from_setup_widgets()
+                captured_context["generated_at"] = now_ts()
+                st.session_state["trial_context"] = normalize_trial_context(captured_context)
+
+                history = st.session_state.get("trial_context_history", [])
+                if not isinstance(history, list):
+                    history = []
+                history.append({"timestamp": captured_context["generated_at"], "context": captured_context.copy()})
+                st.session_state["trial_context_history"] = history[-25:]
+
+                append_audit(
+                    "study_setup_generate",
+                    "protocol",
+                    captured_context["protocol_id"],
+                    (
+                        f"TA={captured_context['therapeutic_area']}; indication={captured_context['indication']}; phase={captured_context['phase']}; "
+                        f"enrollment={captured_context['total_target_enrollment']}; age={captured_context['min_age']}-{captured_context['max_age']}; "
+                        f"gender={captured_context['gender']}; geographies={','.join(captured_context['target_geographies']) or 'None'}; "
+                        f"biomarker={captured_context['require_biomarker_testing']}; rare_protocol={captured_context['rare_disease_protocol']}; "
+                        f"density_tolerance={captured_context['competitive_trial_density_tolerance']}; irb_pref={captured_context['irb_preference']}"
+                    ),
+                )
+                set_flash_message("Generate AI Recommendations completed. Study setup parameters were captured and modeled context was refreshed.")
+                clear_and_rerun()
 
 elif page == "Site Filtering":
     st.markdown("<div class='page-title'>AI Site Ranking & Filtering</div><div class='page-sub'>Review AI-recommended sites, adjust filters, and manually select final candidates for feasibility surveys.</div>", unsafe_allow_html=True)
@@ -1425,11 +1871,12 @@ elif page == "Site Filtering":
         )
         if st.button("Proceed to Feasibility →", use_container_width=True, type="primary"):
             selected_ids = edited.loc[edited["Select"], "Site ID"].tolist()
-            persist_bulk_site_action(MASTER["site_id"].tolist(), manual_select=False)
-            if selected_ids:
-                persist_bulk_site_action(selected_ids, manual_select=True)
-                for sid in selected_ids:
-                    append_audit("manual_select", "site", sid, "Selected from Site Filtering Dashboard")
+            updates_by_site = {normalize_text_value(sid): {"manual_select": False} for sid in MASTER["site_id"].astype(str).tolist()}
+            for sid in selected_ids:
+                updates_by_site[normalize_text_value(sid)] = {"manual_select": True}
+            persist_site_actions_by_row(updates_by_site)
+            for sid in selected_ids:
+                append_audit("manual_select", "site", sid, "Selected from Site Filtering Dashboard")
             set_flash_message(f"Proceed to Feasibility completed. Saved {len(selected_ids)} selected candidate sites.")
             st.session_state["page"] = "Feasibility Distribution"
             clear_and_rerun()
@@ -1453,14 +1900,19 @@ elif page == "Feasibility Distribution":
         threshold = st.slider("Min. AI Match Score", 50, 100, 85)
         min_trials = st.slider("PI Experience (years)", 0, 20, 5)
         auto_include_top_10 = st.checkbox("Auto-include Top 10%", value=True)
-        template = st.text_input("Survey Template", value=f"{TRIAL_TA}-{TRIAL_IND}-feasibility")
+        template = st.text_input(
+            "Survey Template",
+            value=f"{active_trial_context['therapeutic_area']}-{active_trial_context['indication']}-feasibility",
+        )
         if st.button("Apply Rules", use_container_width=True):
             base = base_view[(base_view["ai_rank_score"] >= threshold) & (base_view["pi_years_experience"].fillna(0) >= min_trials)].copy()
             if auto_include_top_10:
                 top_decile = base_view.head(max(1, int(len(base_view) * 0.10))).copy()
                 base = pd.concat([top_decile, base], ignore_index=True).drop_duplicates(subset=["site_id"], keep="first")
-            persist_bulk_site_action(MASTER["site_id"].tolist(), manual_select=False)
-            persist_bulk_site_action(base["site_id"].tolist(), manual_select=True)
+            updates_by_site = {normalize_text_value(sid): {"manual_select": False} for sid in MASTER["site_id"].astype(str).tolist()}
+            for sid in base["site_id"].astype(str).tolist():
+                updates_by_site[normalize_text_value(sid)] = {"manual_select": True}
+            persist_site_actions_by_row(updates_by_site)
             set_flash_message(f"Apply Rules completed. Updated manual selections for {len(base)} sites.")
             clear_and_rerun()
         chosen = st.multiselect(
@@ -1515,11 +1967,37 @@ elif page == "Feasibility Responses":
         st.markdown("</div>", unsafe_allow_html=True)
     with c2:
         st.markdown("<div class='surface'><div class='section-head'>Response Trends</div>", unsafe_allow_html=True)
-        trend = pd.DataFrame({"Day": [f"D{i}" for i in range(1, 9)], "Received": [max(0, recv - 7 + i*2) for i in range(8)], "Pending": [max(0, sent - recv - i) for i in range(8)]})
+        trend_payload = build_feasibility_trend_data(responses_df)
         fig = go.Figure()
-        fig.add_bar(x=trend["Day"], y=trend["Received"], name="Received")
-        fig.add_bar(x=trend["Day"], y=trend["Pending"], name="Pending")
-        fig.update_layout(height=320, margin=dict(l=10, r=10, t=10, b=10), barmode="stack")
+        if trend_payload["mode"] == "real":
+            trend_df = trend_payload["data"]
+            fig.add_bar(x=trend_df["date_label"], y=trend_df["sent"], name="Sent (cumulative)", marker_color="#9CB8D9")
+            fig.add_scatter(x=trend_df["date_label"], y=trend_df["received"], name="Received (cumulative)", mode="lines+markers")
+            fig.add_scatter(x=trend_df["date_label"], y=trend_df["pending"], name="Pending", mode="lines+markers")
+            fig.update_layout(
+                xaxis_title="Event Date",
+                yaxis_title="Count",
+                height=320,
+                margin=dict(l=10, r=10, t=10, b=10),
+            )
+        else:
+            st.caption("Demo trend estimate (timestamps incomplete)")
+            trend_demo = pd.DataFrame(
+                {
+                    "Estimate Bucket": [f"T{i}" for i in range(1, 9)],
+                    "Received": [max(0, recv - 7 + i * 2) for i in range(8)],
+                    "Pending": [max(0, sent - recv - i) for i in range(8)],
+                }
+            )
+            fig.add_bar(x=trend_demo["Estimate Bucket"], y=trend_demo["Received"], name="Received (estimate)")
+            fig.add_bar(x=trend_demo["Estimate Bucket"], y=trend_demo["Pending"], name="Pending (estimate)")
+            fig.update_layout(
+                xaxis_title="Demo Time Bucket",
+                yaxis_title="Count",
+                height=320,
+                margin=dict(l=10, r=10, t=10, b=10),
+                barmode="stack",
+            )
         st.plotly_chart(fig, use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
     tracking = responses_df[["site_name", "country_label", "response_received", "feasibility_score", "days_open", "reminder_count"]].copy()
@@ -1576,6 +2054,7 @@ elif page == "Feasibility Analysis":
 
 elif page == "Qualification":
     st.markdown("<div class='page-title'>Site Qualification Review</div><div class='page-sub'>Review top-level site details, CDA state, CRA flags, and preferred or backup decisions.</div>", unsafe_allow_html=True)
+    st.caption("This page reflects current sidebar Study Filters.")
     qualification_df = get_qualification_page_df(base_view)
     if qualification_df.empty:
         st.info("No sites available in the current filtered cohort for qualification review.")
@@ -1599,8 +2078,16 @@ elif page == "Qualification":
         c1, c2 = st.columns([1.3, 0.9])
         with c1:
             if st.button("Save Qualification Updates", use_container_width=True):
+                updates_by_site = {}
                 for _, r in edited_q.iterrows():
-                    persist_site_action(r["Site ID"], preferred=bool(r["Preferred"]), cda_status_override=r["CDA Status"], cra_flag_override=r["CRA Assigned"])
+                    sid = normalize_text_value(r["Site ID"])
+                    updates_by_site[sid] = {
+                        "preferred": bool(r["Preferred"]),
+                        "cda_status_override": r["CDA Status"],
+                        "cra_flag_override": r["CRA Assigned"],
+                    }
+                persist_site_actions_by_row(updates_by_site)
+                for _, r in edited_q.iterrows():
                     append_audit("qualification_update", "site", r["Site ID"], f"CDA={r['CDA Status']}; CRA={r['CRA Assigned']}; preferred={r['Preferred']}")
                 set_flash_message("Save Qualification Updates completed. Qualification changes were persisted.")
                 clear_and_rerun()
@@ -1618,6 +2105,7 @@ elif page == "Qualification":
 
 elif page == "Final Selection":
     st.markdown("<div class='page-title'>Final Selection</div><div class='page-sub'>Review and finalize the AI-recommended roster, capture justifications, and export stakeholder-ready outputs.</div>", unsafe_allow_html=True)
+    st.caption("This page reflects current sidebar Study Filters.")
     final_selection_df = get_final_selection_page_df(base_view)
     metric_cards([
         ("Selected Sites", f"{int((final_selection_df['final_status'] == 'Selected').sum())}/{max(1, len(final_selection_df.head(35)))}", "dark"),
@@ -1660,9 +2148,28 @@ elif page == "Final Selection":
 
 elif page == "Chatbot Assistance":
     st.markdown("<div class='page-title'>Chatbot Assistance</div><div class='page-sub'>Use the assistant for navigation guidance, site queries, and score explanations based on the current dashboard state.</div>", unsafe_allow_html=True)
+    chat_scope_options = [
+        "Site Filtering",
+        "Feasibility Distribution",
+        "Feasibility Responses",
+        "Feasibility Analysis",
+        "Qualification",
+        "Final Selection",
+        "All Sites (Unfiltered)",
+    ]
+    last_context_page = normalize_text_value(st.session_state.get("last_context_page", "Site Filtering"))
+    default_scope = last_context_page if last_context_page in chat_scope_options else "Site Filtering"
     c1, c2 = st.columns([0.65, 1.75])
     with c1:
         st.markdown("<div class='surface'><div class='section-head'>Recent Sessions</div>", unsafe_allow_html=True)
+        selected_context_scope = st.selectbox(
+            "Context Scope",
+            options=chat_scope_options,
+            index=chat_scope_options.index(default_scope),
+            key="chat_context_scope",
+        )
+        chat_context_df = resolve_chatbot_context_df(selected_context_scope, MASTER)
+        st.caption(f"Using context from {selected_context_scope} ({len(chat_context_df)} rows).")
         for item in ["Mass General Feasibility", "European Oncology Sites", "SLA Breach Analysis", "Protocol ST-492 Setup"]:
             st.markdown(f"- {item}")
         if st.button("New Chat Session", use_container_width=True):
@@ -1681,8 +2188,8 @@ elif page == "Chatbot Assistance":
             st.session_state.chat_history.append({"role": "user", "content": prompt})
             with st.chat_message("user"):
                 st.write(prompt)
-            answer_payload = chatbot_answer(prompt, page, base_view)
-            answer_text = normalize_text_value(answer_payload.get("response", "")).strip() or chatbot_answer_fallback(prompt, base_view)
+            answer_payload = chatbot_answer(prompt, selected_context_scope, chat_context_df)
+            answer_text = normalize_text_value(answer_payload.get("response", "")).strip() or chatbot_answer_fallback(prompt, chat_context_df)
             st.session_state.chat_history.append({"role": "assistant", "content": answer_text})
             with st.chat_message("assistant"):
                 st.write(answer_text)
@@ -1690,7 +2197,7 @@ elif page == "Chatbot Assistance":
                 username=normalize_text_value(st.session_state.get("current_user", "")),
                 full_name=normalize_text_value(st.session_state.get("current_full_name", "")),
                 role=normalize_text_value(st.session_state.get("current_role", "")),
-                page_name=page,
+                page_name=f"{page} [{selected_context_scope}]",
                 prompt=prompt,
                 response=answer_text,
                 used_local_llm=bool(answer_payload.get("used_local_llm", False)),

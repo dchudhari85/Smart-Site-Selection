@@ -23,3 +23,5 @@ timestamp,action,entity_type,entity_id,details
 2026-04-09 18:00:56,logout,user,admin,User logged out
 2026-04-09 19:36:00,login,user,admin,role=Admin; full_name=Alex Morgan
 2026-04-15 22:32:12,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-15 23:09:28,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-15 23:17:59,login,user,admin,role=Admin; full_name=Alex Morgan
