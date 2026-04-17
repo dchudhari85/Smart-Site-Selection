@@ -25,3 +25,20 @@ timestamp,action,entity_type,entity_id,details
 2026-04-15 22:32:12,login,user,admin,role=Admin; full_name=Alex Morgan
 2026-04-15 23:09:28,login,user,admin,role=Admin; full_name=Alex Morgan
 2026-04-15 23:17:59,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-17 09:48:09,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-17 09:48:35,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-17 09:48:42,study_setup_generate,protocol,,"TA=Cardiology; indication=NSCLC; phase=I; enrollment=1; age=0-0; gender=All; geographies=Asia-Pacific,Europe,Latin America; biomarker=False; rare_protocol=False; density_tolerance=Low; irb_pref=Either"
+2026-04-17 09:48:49,logout,user,admin,User logged out
+2026-04-17 09:49:09,login,user,cra_user,role=CRA; full_name=Jordan Lee
+2026-04-17 10:04:00,login,user,cra_user,role=CRA; full_name=Jordan Lee
+2026-04-17 10:04:13,study_setup_generate,protocol,,"TA=Cardiology; indication=NSCLC; phase=I; enrollment=1; age=0-0; gender=All; geographies=Asia-Pacific,Europe,Latin America; biomarker=False; rare_protocol=False; density_tolerance=Low; irb_pref=Either"
+2026-04-17 10:04:23,logout,user,cra_user,User logged out
+2026-04-17 10:04:36,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-17 10:35:23,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-17 11:05:47,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-17 11:20:11,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-17 11:24:21,logout,user,admin,User logged out
+2026-04-17 11:24:34,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-17 11:59:27,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-17 15:06:36,login,user,admin,role=Admin; full_name=Alex Morgan
+2026-04-17 15:16:35,login,user,admin,role=Admin; full_name=Alex Morgan

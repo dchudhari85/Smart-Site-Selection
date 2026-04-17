@@ -586,8 +586,8 @@ def _build_default_trial_context(trial_seed: dict) -> dict:
     default_geos = geo_options[:3] if geo_options else []
 
     return {
-        "study_title": f"Phase {trial_phase} Evaluation of {trial_ind} in {trial_ta}",
-        "protocol_id": f"ST-{trial_phase}-{trial_ta[:3].upper()}-03",
+        "study_title": "",
+        "protocol_id": "",
         "therapeutic_area": trial_ta,
         "indication": trial_ind,
         "phase": trial_phase,
@@ -664,10 +664,8 @@ def normalize_trial_context(raw_context: dict | None) -> dict:
         irb_preference = DEFAULT_TRIAL_CONTEXT["irb_preference"]
 
     context = {
-        "study_title": normalize_text_value(merged.get("study_title", DEFAULT_TRIAL_CONTEXT["study_title"])).strip()
-        or f"Phase {phase} Evaluation of {indication} in {therapeutic_area}",
-        "protocol_id": normalize_text_value(merged.get("protocol_id", DEFAULT_TRIAL_CONTEXT["protocol_id"])).strip()
-        or f"ST-{phase}-{therapeutic_area[:3].upper()}-03",
+        "study_title": normalize_text_value(merged.get("study_title", DEFAULT_TRIAL_CONTEXT["study_title"])).strip(),
+        "protocol_id": normalize_text_value(merged.get("protocol_id", DEFAULT_TRIAL_CONTEXT["protocol_id"])).strip(),
         "therapeutic_area": therapeutic_area,
         "indication": indication,
         "phase": phase,
@@ -685,9 +683,18 @@ def normalize_trial_context(raw_context: dict | None) -> dict:
     return context
 
 
+def reset_trial_identity_fields_for_new_entry() -> None:
+    st.session_state["trial_context"] = normalize_trial_context(st.session_state.get("trial_context"))
+    st.session_state["trial_context"]["study_title"] = ""
+    st.session_state["trial_context"]["protocol_id"] = ""
+    st.session_state.pop("setup_study_title", None)
+    st.session_state.pop("setup_protocol_id", None)
+
+
 def initialize_trial_context_state() -> None:
     st.session_state["trial_context"] = normalize_trial_context(st.session_state.get("trial_context"))
     active = st.session_state["trial_context"]
+
     for field, widget_key in TRIAL_CONTEXT_WIDGET_KEYS.items():
         if widget_key not in st.session_state:
             st.session_state[widget_key] = active.get(field)
@@ -900,22 +907,6 @@ def build_master(sites, pis, perf, feas, rec, actions, track, trial_ta: str, tri
     })
     df = df.sort_values(["ai_rank_score", "feasibility_score", "qualification_score"], ascending=False).reset_index(drop=True)
     return df
-
-
-initialize_trial_context_state()
-ACTIVE_TRIAL_CONTEXT = get_active_trial_context()
-MASTER = build_master(
-    SITES,
-    PIS,
-    PERF,
-    FEAS,
-    REC,
-    ACTIONS,
-    TRACK,
-    ACTIVE_TRIAL_CONTEXT["therapeutic_area"],
-    ACTIVE_TRIAL_CONTEXT["indication"],
-    ACTIVE_TRIAL_CONTEXT["phase"],
-)
 
 
 def clear_and_rerun():
@@ -1146,6 +1137,27 @@ def style_app():
       background: #FFFFFF !important;
       color: var(--text-dark) !important;
       border: 1px solid var(--border) !important;
+    }
+    .stTextInput input::placeholder,
+    .stTextInput input::-webkit-input-placeholder,
+    .stTextInput input::-moz-placeholder,
+    .stTextInput input:-ms-input-placeholder,
+    .stTextInput input::-ms-input-placeholder {
+      color: #94A3B8 !important;
+      opacity: 1 !important;
+    }
+    div[data-testid="stTextInput"] input {
+      color: #1F2937 !important;
+      -webkit-text-fill-color: #1F2937 !important;
+      caret-color: #1F2937 !important;
+      opacity: 1 !important;
+      background: #FFFFFF !important;
+    }
+    div[data-testid="stTextInput"] input::placeholder,
+    div[data-testid="stTextInput"] input::-webkit-input-placeholder {
+      color: #94A3B8 !important;
+      -webkit-text-fill-color: #94A3B8 !important;
+      opacity: 1 !important;
     }
     .stRadio [role="radiogroup"] label, .stRadio [role="radiogroup"] p { color: var(--text-dark) !important; }
     .stButton > button, .stDownloadButton > button {
@@ -1458,6 +1470,7 @@ def perform_logout() -> None:
     st.session_state["current_role"] = ""
     st.session_state["page"] = "Study Setup"
     reset_chat_history()
+    reset_trial_identity_fields_for_new_entry()
     set_flash_message("Logged out successfully.")
     st.rerun()
 
@@ -1492,6 +1505,7 @@ def render_login_screen() -> None:
                         user["username"],
                         f"role={user['role']}; full_name={user['full_name']}",
                     )
+                    reset_trial_identity_fields_for_new_entry()
                     set_flash_message(f"Welcome {user['full_name']}. Login successful.")
                     st.rerun()
             st.caption("Demo users: admin/admin123 (Admin), cra_user/cra123 (CRA)")
@@ -1624,6 +1638,21 @@ if not bool(st.session_state.get("authenticated", False)):
     render_login_screen()
     st.stop()
 
+initialize_trial_context_state()
+ACTIVE_TRIAL_CONTEXT = get_active_trial_context()
+MASTER = build_master(
+    SITES,
+    PIS,
+    PERF,
+    FEAS,
+    REC,
+    ACTIONS,
+    TRACK,
+    ACTIVE_TRIAL_CONTEXT["therapeutic_area"],
+    ACTIVE_TRIAL_CONTEXT["indication"],
+    ACTIVE_TRIAL_CONTEXT["phase"],
+)
+
 workflow_labels = {
     "Study Setup": "Protocol Definition",
     "Site Filtering": "AI Site Ranking & Filtering",
@@ -1720,8 +1749,16 @@ if page == "Study Setup":
         with st.container(border=True):
             st.markdown("<div class='section-head'>General Information</div>", unsafe_allow_html=True)
             c1, c2 = st.columns(2)
-            study_title = c1.text_input("Study Title", key=TRIAL_CONTEXT_WIDGET_KEYS["study_title"])
-            protocol_id = c2.text_input("Protocol ID", key=TRIAL_CONTEXT_WIDGET_KEYS["protocol_id"])
+            study_title = c1.text_input(
+                "Study Title",
+                key=TRIAL_CONTEXT_WIDGET_KEYS["study_title"],
+                placeholder="e.g. Phase III Evaluation of NSCLC in Oncology",
+            )
+            protocol_id = c2.text_input(
+                "Protocol ID",
+                key=TRIAL_CONTEXT_WIDGET_KEYS["protocol_id"],
+                placeholder="e.g. ST-III-ONC-03",
+            )
             st.divider()
             st.markdown("<div class='section-head'>Clinical Parameters</div>", unsafe_allow_html=True)
             c3, c4 = st.columns(2)
@@ -2227,14 +2264,13 @@ elif page == "CRA Notifications":
             show = show[show["acknowledged"].fillna(False)]
         for _, note in show.sort_values("created_at", ascending=False).iterrows():
             with st.container(border=True):
-                a, b, c = st.columns([2.3, 0.8, 0.9])
-                a.markdown(f"**{note['type']}**")
-                a.caption(f"{note.get('site_name', note['site_id'])} has an update. {note['message']}")
-                b.markdown(f"<span class='site-chip {'chip-danger' if note['priority']=='High' else 'chip-warning' if note['priority']=='Medium' else 'chip-info'}'>{note['priority'].upper()}</span>", unsafe_allow_html=True)
+                left, right = st.columns([3, 1])
+                left.markdown(f"**{note['type']}**")
+                left.caption(f"{note.get('site_name', note['site_id'])} has an update. {note['message']}")
                 if bool(note.get("acknowledged", False)):
-                    c.caption("Acknowledged")
+                    right.caption("Acknowledged")
                 else:
-                    if c.button("Acknowledge", key=f"ack_{note['notification_id']}"):
+                    if right.button("Acknowledge", key=f"ack_{note['notification_id']}"):
                         acknowledge_notification(note["notification_id"])
                         append_audit("notification_ack", "notification", note["notification_id"], note["type"])
                         set_flash_message("Acknowledge completed. Notification marked as acknowledged.")
